@@ -15,7 +15,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test-coverage": "npm run test --coverage --watchAll=false"
   },
   "eslintConfig": {
     "extends": [
@@ -33,6 +34,27 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isdi-coders-2022/Daniel-Montes_Back-Final-Project-202204-BCN.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isdi-coders-2022/Daniel-Montes_Back-Final-Project-202204-BCN/issues"
+  },
+  "homepage": "https://github.com/isdi-coders-2022/Daniel-Montes_Back-Final-Project-202204-BCN#readme",
+  "jest": {
+    "collectCoverageFrom": [
+      "!src/index.js",
+      "!src/reportWebVitals.js",
+      "!src/utils/toDoListData.js"
     ]
   }
 }
