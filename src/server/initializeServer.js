@@ -1,7 +1,8 @@
 require("dotenv").config();
-const debug = require("debug")("Penguin:server:initializeServer");
 const chalk = require("chalk");
-const app = require("../index");
+const debug = require("debug")(chalk.white("Penguin:server:initializeServer"));
+
+const app = require("./index");
 
 const initializeServer = (port) =>
   new Promise((resolve, reject) => {
