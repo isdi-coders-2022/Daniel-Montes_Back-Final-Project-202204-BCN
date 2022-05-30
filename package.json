@@ -3,42 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@svgr/webpack": "^6.2.1",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.1",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
-    "chalk": "^5.0.1",
+    "chalk": "^4.1.2",
+    "commander": "^9.3.0",
+    "cors": "^2.8.5",
     "debug": "^4.3.4",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-validation": "^4.1.0",
+    "helmet": "^5.1.0",
+    "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.4",
     "mongoose-type-url": "^2.1.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.16",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-scripts": "^5.0.1",
-    "supertest": "^6.2.3",
-    "web-vitals": "^2.1.4",
-    "webpack-dev-server": "^4.9.0"
+    "supertest": "^6.2.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "node src",
+    "test": "jest --watchAll=false",
     "eject": "react-scripts eject",
+    "start-dev": "nodemon src -q",
     "test-coverage": "npm run test --coverage --watchAll=false",
     "prepare": "husky install"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -51,11 +40,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
-  "devDependencies": {
-    "husky": "^7.0.0"
   },
   "repository": {
     "type": "git",
@@ -72,7 +56,17 @@
     "collectCoverageFrom": [
       "!src/index.js",
       "!src/reportWebVitals.js",
-      "!src/utils/toDoListData.js"
+      "!src/server/initializeServer.js"
     ]
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "src/index.js",
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^7.0.0",
+    "nodemon": "^2.0.16"
   }
 }

@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+require("dotenv").config();
+const debug = require("debug")("Penguin:root");
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const chalk = require("chalk");
+const connectDB = require("./database");
+const initializeServer = require("./server/initializeServer");
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const port = process.env.PORT ?? 4000;
+const connectionString = process.env.MONGO_CONNECTION;
+
+(async () => {
+  try {
+    await connectDB(connectionString);
+    await initializeServer(port);
+  } catch {
+    debug(chalk.red("Exiting with errors"));
+    process.exit(1);
+  }
+})();
