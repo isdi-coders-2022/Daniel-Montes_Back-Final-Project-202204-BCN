@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
-const debug = require("debug")("Penguin:srv:middlewares:errors");
 const User = require("../../db/models/User");
 
 const loginUser = async (req, res, next) => {
@@ -30,7 +29,7 @@ const loginUser = async (req, res, next) => {
 
       next(error);
     } else {
-      const token = jsonwebtoken.sign(userData, process.env.JWT_SECRET_USER);
+      const token = jsonwebtoken.sign(userData, process.env.JWT_SECRET);
 
       res.status(200).json({ token });
     }
@@ -58,7 +57,6 @@ const registerUser = async (req, res, next) => {
       userError.customMessage = "User name already exist";
       userError.statusCode = 409;
       next(userError);
-      debug("jamón");
     }
   } catch (error) {
     next(error);

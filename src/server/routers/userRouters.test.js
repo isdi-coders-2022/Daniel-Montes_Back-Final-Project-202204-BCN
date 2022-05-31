@@ -63,33 +63,3 @@ describe("Given a POST '/login' endpoint", () => {
     });
   });
 });
-
-describe("Given a POST '/register' endpoint", () => {
-  const newUserRequestReceived = {
-    name: "hello",
-    mail: "hello",
-    username: "hello",
-    password: "hello",
-  };
-  describe("When it receives a request", () => {
-    test("Then it should receive the created user object", async () => {
-      const { body } = await request(app)
-        .post("/register")
-        .send(newUserRequestReceived)
-        .expect(201);
-
-      expect(body.user).toBe(newUserRequestReceived.name);
-    });
-  });
-
-  describe("When it receives a request with an existing user", () => {
-    test("Then it should call the response method status code 409", async () => {
-      await User.create(newUserRequestReceived);
-
-      await request(app)
-        .post("/user/register")
-        .send(newUserRequestReceived)
-        .expect(409);
-    });
-  });
-});
