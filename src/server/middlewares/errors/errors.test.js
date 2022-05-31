@@ -1,37 +1,31 @@
 const { notFoundError, generalError } = require("./errors");
 
-describe("Given a notFoundError function", () => {
-  describe("When its invoked with a response", () => {
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+describe("Given the notFoundError function", () => {
+  describe("When its invoked", () => {
+    test("Then it should call the next function with an error", () => {
+      const nextFunction = jest.fn();
+      const error = new Error();
 
-    test("Then it should call the reponse's method status with a 404", () => {
-      const expectedStatusCode = 404;
+      notFoundError(null, null, nextFunction);
 
-      notFoundError(null, res);
-
-      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
+      expect(nextFunction).toHaveBeenCalledWith(error);
     });
   });
-  describe("When its invoked with a response with a message 'WGeneral error'", () => {
-    test("Then it should call the responses method status with a 401 and a 'General error' message", () => {
+});
+
+describe("Given the generalError function", () => {
+  describe("When its invoked with an empty error", () => {
+    test("Then it should call the response's status method with a 500", () => {
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-      const error = {
-        statusCode: 500,
-        message: "Wrong username",
-      };
-      const expectedStatus = 500;
-      const expectedMessage = "General error";
+      const expectedError = 500;
+      const error = {};
 
-      generalError(error, null, res);
+      generalError(error, null, res, null);
 
-      expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      expect(res.json).toHaveBeenCalledWith(expectedMessage);
+      expect(res.status).toHaveBeenCalledWith(expectedError);
     });
   });
 });
