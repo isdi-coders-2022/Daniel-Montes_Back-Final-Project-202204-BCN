@@ -74,7 +74,7 @@ describe("Given a POST '/register' endpoint", () => {
   describe("When it receives a request", () => {
     test("Then it should receive the created user object", async () => {
       const { body } = await request(app)
-        .post("/user/register")
+        .post("/register")
         .send(newUserRequestReceived)
         .expect(201);
 
