@@ -54,7 +54,7 @@ describe("Given a POST '/login' endpoint", () => {
 
     test("Then it should specify json as the content type in the http header", async () => {
       const response = await request(app)
-        .post("/user/login")
+        .post("/login")
         .send(userRequestReceived);
 
       expect(response.headers["content-type"]).toEqual(
