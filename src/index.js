@@ -2,18 +2,22 @@ require("dotenv").config();
 const debug = require("debug")("Penguin:root");
 
 const chalk = require("chalk");
-const connectDB = require("./database");
+const connectDB = require("./db");
 const initializeServer = require("./server/initializeServer");
 
 const port = process.env.PORT ?? 4000;
-const connectionString = process.env.MONGO_CONNECTION;
+const connectionString = process.env.MONGODB_URI;
 
 (async () => {
   try {
     await connectDB(connectionString);
     await initializeServer(port);
-  } catch {
-    debug(chalk.red("Exiting with errors"));
+  } catch (error) {
+    debug(
+      `${
+        chalk.red("Exiting with error: ") + error
+      }\n${connectionString}: Port-> ${port}`
+    );
     process.exit(1);
   }
 })();

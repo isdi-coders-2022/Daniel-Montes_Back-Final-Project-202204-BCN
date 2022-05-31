@@ -1,4 +1,3 @@
-require("dotenv").config();
 const chalk = require("chalk");
 const debug = require("debug")(chalk.rgb(255, 42, 0)("Penguin:ERROR"));
 

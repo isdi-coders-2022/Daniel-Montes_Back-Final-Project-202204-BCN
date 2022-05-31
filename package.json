@@ -1,7 +1,7 @@
 {
   "name": "adoptaunpinguino-back",
   "version": "0.1.0",
-  "private": true,
+  "main": "index.js",
   "dependencies": {
     "@types/jest": "^27.5.1",
     "axios": "^0.27.2",
@@ -16,6 +16,7 @@
     "helmet": "^5.1.0",
     "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
+    "mongodb-memory-server": "^8.6.0",
     "mongoose": "^6.3.4",
     "mongoose-type-url": "^2.1.0",
     "morgan": "^1.10.0",
@@ -23,23 +24,10 @@
   },
   "scripts": {
     "start": "node src",
-    "test": "jest --watchAll=false",
-    "eject": "react-scripts eject",
+    "test": "jest --watchAll=false --passWithNoTests",
     "start-dev": "nodemon src -q",
-    "test-coverage": "npm run test --coverage --watchAll=false",
+    "test-coverage": "jest --coverage --watchAll=false",
     "prepare": "husky install"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "repository": {
     "type": "git",
@@ -51,16 +39,6 @@
   "bugs": {
     "url": "https://github.com/isdi-coders-2022/Daniel-Montes_Back-Final-Project-202204-BCN/issues"
   },
-  "homepage": "https://github.com/isdi-coders-2022/Daniel-Montes_Back-Final-Project-202204-BCN#readme",
-  "jest": {
-    "collectCoverageFrom": [
-      "!src/index.js",
-      "!src/reportWebVitals.js",
-      "!src/server/initializeServer.js"
-    ]
-  },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "src/index.js",
   "devDependencies": {
     "eslint": "^8.16.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -68,5 +46,15 @@
     "eslint-plugin-import": "^2.26.0",
     "husky": "^7.0.0",
     "nodemon": "^2.0.16"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "./src/**/*.js",
+      "!.eslintrc.js",
+      "!coverage/**/*.js",
+      "!src/index.js",
+      "!src/db/index.js",
+      "!src/server/initializeServer.js"
+    ]
   }
 }
