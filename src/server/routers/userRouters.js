@@ -15,6 +15,5 @@ usersRouter.post(
   validate(credentialsRegisterSchema),
   registerUser
 );
-usersRouter.get("/users", loadUsers);
 
 module.exports = usersRouter;
