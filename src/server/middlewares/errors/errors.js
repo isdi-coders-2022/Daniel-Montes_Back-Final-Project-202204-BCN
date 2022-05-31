@@ -1,20 +1,24 @@
+require("dotenv").config();
+const debug = require("debug")("penguin:server:middlewares:errors");
 const chalk = require("chalk");
-const debug = require("debug")(chalk.rgb(255, 42, 0)("Penguin:ERROR"));
+const { customError } = require("../../utils/customError");
 
-require("debug");
+const notFoundError = (req, res, next) => {
+  const error = customError(404, "Page not found");
 
-const notFoundError = (req, res) => {
-  debug(chalk.rgb(255, 42, 0)("Page Not Found"));
-  res.status(404).json({ msg: "Page Not Found" });
+  next(error);
 };
 
 // eslint-disable-next-line no-unused-vars
 const generalError = (error, req, res, next) => {
+  debug(chalk.red(error.message || error.customMessage));
+  const message = error.customMessage ?? "General error";
   const statusCode = error.statusCode ?? 500;
-  debug(chalk.rgb(255, 42, 0)(error.message));
-  const errorMessage = error.customMessage ?? "General error";
 
-  res.status(statusCode).json(errorMessage);
+  res.status(statusCode).json({ error: true, message });
 };
 
-module.exports = { notFoundError, generalError };
+module.exports = {
+  notFoundError,
+  generalError,
+};
