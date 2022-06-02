@@ -1,13 +1,13 @@
 require("dotenv").config();
 const chalk = require("chalk");
-const debug = require("debug")(chalk.white("Penguin:server:initializeServer"));
+const debug = require("debug")(chalk.yellow("Penguin:server:initializeServer"));
 
 const app = require("./index");
 
 const initializeServer = (port) =>
   new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
-      debug(chalk.yellow(`Server listening on port ${port}`));
+      debug(chalk.white(`Server listening on port ${port}`));
       resolve();
     });
 

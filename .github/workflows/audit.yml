@@ -29,10 +29,12 @@ jobs:
 
       - name: Install modules
         run: npm ci
-
+      - name: Testing coverage
+        run: npm run test-coverage
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
       - name: ESLint validation
         run: npx eslint --ignore-path .gitignore
-
       - name: Check commit message length
         uses: gsactions/commit-message-checker@v1
         with:
