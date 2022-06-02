@@ -1,10 +1,13 @@
 require("dotenv").config();
-const debug = require("debug")("penguin:server:middlewares:errors");
 const chalk = require("chalk");
+const debug = require("debug")(
+  chalk.yellow("penguin:server:middlewares:errors")
+);
+
 const { customError } = require("../../utils/customError");
 
 const notFoundError = (req, res, next) => {
-  const error = customError(404, "Page not found");
+  const error = customError(404, chalk.white("Page not found"));
 
   next(error);
 };

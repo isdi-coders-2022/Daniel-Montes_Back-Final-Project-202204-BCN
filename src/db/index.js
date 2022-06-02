@@ -1,6 +1,6 @@
 require("dotenv").config();
 const chalk = require("chalk");
-const debug = require("debug")(chalk.white("Penguin:db:connection"));
+const debug = require("debug")(chalk.yellow("Penguin:db:connection"));
 
 const mongoose = require("mongoose");
 
@@ -26,7 +26,7 @@ const connectDB = (connectionString) =>
         reject();
         return;
       }
-      debug(chalk.yellow("Connected to database"));
+      debug(chalk.white("Connected to database"));
       resolve();
     });
   });
