@@ -32,15 +32,11 @@ describe("Given a POST '/login' endpoint", () => {
   describe("When it receives a request", () => {
     users = [
       {
-        name: "test",
-        mail: "test@gmail.com",
         username: "test",
         password:
           "$2a$10$NwtqJAOXVZ2z2.jIVU6vE.p2d6Elc0U2aAkhL.z7khu5aDZGpS6pm",
       },
       {
-        name: "test 1",
-        mail: "test1@gmail.com",
         username: "test 1",
         password:
           "$2a$10$4iHWHlFBQ/1VbzyQ0B5tj.C78eC.msM1NL7wL3nrdkTT8IBfFRQ3a",
