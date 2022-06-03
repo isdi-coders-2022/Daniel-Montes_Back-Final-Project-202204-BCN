@@ -28,6 +28,8 @@ const loginUser = async (req, res, next) => {
 
       next(error);
     } else {
+      debug(userData);
+      debug(process.env.JWT_SECRET);
       const token = jsonwebtoken.sign(userData, process.env.JWT_SECRET);
 
       res.status(200).json({ token });
