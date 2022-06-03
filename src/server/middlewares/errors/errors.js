@@ -7,7 +7,7 @@ const debug = require("debug")(
 const { customError } = require("../../utils/customError");
 
 const notFoundError = (req, res, next) => {
-  const error = customError(404, chalk.white("Page not found"));
+  const error = customError(404, "Page not found");
 
   next(error);
 };
@@ -15,7 +15,7 @@ const notFoundError = (req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const generalError = (error, req, res, next) => {
   debug(chalk.red(error.message || error.customMessage));
-  const message = error.customMessage ?? "General error";
+  const message = error.customMessage ?? error.message;
   const statusCode = error.statusCode ?? 500;
 
   res.status(statusCode).json({ error: true, message });

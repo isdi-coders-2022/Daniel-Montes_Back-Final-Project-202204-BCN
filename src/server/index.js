@@ -28,7 +28,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(helmet());
 
-app.use("/users/login", usersRouter);
+app.post("/users/login", usersRouter);
 
 app.use(notFoundError);
 app.use(generalError);
