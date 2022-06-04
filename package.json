@@ -20,7 +20,8 @@
     "mongoose": "^6.3.4",
     "mongoose-type-url": "^2.1.0",
     "morgan": "^1.10.0",
-    "supertest": "^6.2.3"
+    "supertest": "^6.2.3",
+    "supports-color": "^9.2.2"
   },
   "scripts": {
     "start": "node src",
@@ -40,12 +41,18 @@
     "url": "https://github.com/isdi-coders-2022/Daniel-Montes_Back-Final-Project-202204-BCN/issues"
   },
   "devDependencies": {
+    "-": "^0.0.1",
+    "@types/debug": "^4.1.7",
+    "@types/dotenv": "^8.2.0",
+    "D": "^1.0.0",
     "eslint": "^8.16.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "husky": "^7.0.0",
-    "nodemon": "^2.0.16"
+    "install": "^0.13.0",
+    "nodemon": "^2.0.16",
+    "npm": "^8.12.1"
   },
   "jest": {
     "collectCoverageFrom": [
