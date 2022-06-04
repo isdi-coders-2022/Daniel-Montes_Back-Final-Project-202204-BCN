@@ -7,12 +7,14 @@ const User = require("../../db/models/User");
 const loginUser = async (req, res, next) => {
   const username = req.body.username.toString();
   const password = req.body.password.toString();
-  debug(`USERNAMEEEEEEEE${username}`);
+  debug(`USERNAME: ${username}`);
+  debug(`PASSWORD: ${password}`);
 
   const user = await User.findOne({ username });
 
   if (!user) {
     const error = new Error("Incorrect password");
+    debug("User not found");
     error.statusCode = 403;
     error.customMessage = "Username or password is wrong";
 
@@ -25,6 +27,7 @@ const loginUser = async (req, res, next) => {
     const rightPassword = await bcrypt.compare(password, user.password);
 
     if (!rightPassword) {
+      debug("Password not found");
       const error = new Error("Incorrect password");
       error.statusCode = 403;
       error.customMessage = "Username or password is wrong";
