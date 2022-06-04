@@ -4,10 +4,11 @@ const morgan = require("morgan");
 const cors = require("cors");
 const usersRouter = require("./middlewares/routers/userRouters");
 const { notFoundError, generalError } = require("./middlewares/errors/errors");
+const { auth } = require("./middlewares/auth/auth");
 
 const corsOptions = {
   origin: [
-    "http://localhost:3000",
+    "http://localhost:3000", // frontend
     "http://localhost:3001",
     "http://localhost:3002",
     "http://localhost:4000",

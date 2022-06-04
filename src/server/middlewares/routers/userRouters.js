@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const { validate } = require("express-validation");
+
 const { loginUser } = require("../../controllers/userControllers");
 const { userLoginSchema } = require("../../schemas/userSchema");
 
