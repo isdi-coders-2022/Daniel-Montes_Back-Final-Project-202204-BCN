@@ -5,11 +5,11 @@ const Penguin = require("../../../db/models/Penguin/Penguin");
 const getPenguins = async (req, res, next) => {
   try {
     const penguins = await Penguin.find();
-    debug(chalk.green("Someone asked for all the notes"));
+    debug(chalk.green("Someone asked for all the penguins"));
 
     res.status(200).json({ penguins });
   } catch (err) {
-    err.message = "Error getting all the notes";
+    err.message = "Error getting all the penguins";
     err.code = 404;
 
     next(err);
