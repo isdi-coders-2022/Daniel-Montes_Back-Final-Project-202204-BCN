@@ -1,4 +1,4 @@
-const debug = require("debug")("amazingN:notesControllers");
+const debug = require("debug")("penguin:penguinControllers");
 const chalk = require("chalk");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
