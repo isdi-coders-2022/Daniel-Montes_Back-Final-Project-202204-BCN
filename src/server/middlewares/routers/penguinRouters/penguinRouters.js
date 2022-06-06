@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const { validate } = require("../../../../db/models/User/User");
-const { penguinSchema } = require("../../../schemas/penguinSchema");
+
 const {
   getPenguins,
   deletePenguin,
@@ -9,7 +8,7 @@ const {
 
 const penguinRouters = express.Router();
 
-penguinRouters.get("/penguins", validate(penguinSchema), getPenguins);
-penguinRouters.delete("/delete", validate(penguinSchema), deletePenguin);
+penguinRouters.get("/penguins", getPenguins);
+penguinRouters.delete("/delete", deletePenguin);
 
-module.exports = { penguinRouters };
+module.exports = penguinRouters;
