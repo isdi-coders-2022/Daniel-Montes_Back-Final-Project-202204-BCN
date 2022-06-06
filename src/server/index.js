@@ -29,8 +29,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(helmet());
 
-app.get("/penguins", penguinRouters);
-app.post("/users/login", usersRouter);
+app.use("/penguins", penguinRouters);
+app.use("/users", usersRouter);
 
 app.use(notFoundError);
 app.use(generalError);

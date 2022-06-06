@@ -32,4 +32,13 @@ const deletePenguin = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { getPenguins, deletePenguin };
+
+const createPenguin = async (req, res) => {
+  debug(chalk.green("received request to create a penguin..."));
+  const penguin = req.body;
+  const newPenguin = await Penguin.create(penguin);
+
+  res.status(201).json(newPenguin);
+};
+
+module.exports = { getPenguins, deletePenguin, createPenguin };

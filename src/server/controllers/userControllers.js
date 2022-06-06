@@ -7,8 +7,7 @@ const User = require("../../db/models/User/User");
 const loginUser = async (req, res, next) => {
   const username = req.body.username.toString();
   const password = req.body.password.toString();
-  debug(`USERNAME: ${username}`);
-  debug(`PASSWORD: ${password}`);
+  debug(`Trying to login username: ${username}`);
 
   const user = await User.findOne({ username });
 
