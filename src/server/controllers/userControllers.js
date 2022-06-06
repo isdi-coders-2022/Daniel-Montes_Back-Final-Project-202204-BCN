@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const chalk = require("chalk");
 const debug = require("debug")(chalk.yellow("penguin:userController"));
-const User = require("../../db/models/User");
+const User = require("../../db/models/User/User");
 
 const loginUser = async (req, res, next) => {
   const username = req.body.username.toString();
