@@ -29,7 +29,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(helmet());
 
-app.use("/penguins", penguinRouters);
+app.get("/penguins", penguinRouters);
 app.post("/users/login", usersRouter);
 
 app.use(notFoundError);
