@@ -7,6 +7,6 @@ const { userLoginSchema } = require("../../schemas/userSchema");
 
 const usersRouters = express.Router();
 
-usersRouters.post("/users/login", validate(userLoginSchema), loginUser);
+usersRouters.post("/login", validate(userLoginSchema), loginUser);
 
 module.exports = usersRouters;
