@@ -12,6 +12,6 @@ const penguinRouters = express.Router();
 penguinRouters.get("/", getPenguins);
 penguinRouters.get("/penguins", getPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
-penguinRouters.post("/", createPenguin);
+penguinRouters.post("/register", createPenguin);
 
 module.exports = penguinRouters;
