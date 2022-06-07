@@ -8,7 +8,6 @@ const userLoginSchema = {
       .required(),
     password: Joi.string()
       .max(20)
-
       .messages({ message: "A password is required" })
       .required(),
   }),
