@@ -7,11 +7,14 @@ const {
   userLogin,
 } = require("../../controllers/userControllers");
 
-const { userLoginSchema } = require("../../schemas/userSchema");
+const {
+  userRegisterSchema,
+  userLoginSchema,
+} = require("../../schemas/userSchema");
 
 const usersRouters = express.Router();
 
 usersRouters.post("/users/login", validate(userLoginSchema), userLogin);
-usersRouters.post("/register", validate(userLoginSchema), userRegister);
+usersRouters.post("/register", validate(userRegisterSchema), userRegister);
 
 module.exports = usersRouters;
