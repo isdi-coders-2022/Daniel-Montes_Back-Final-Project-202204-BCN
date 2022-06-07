@@ -15,6 +15,6 @@ const {
 const usersRouters = express.Router();
 
 usersRouters.post("/users/login", validate(userLoginSchema), userLogin);
-usersRouters.post("/register", validate(userRegisterSchema), userRegister);
+usersRouters.post("/register", userRegister);
 
 module.exports = usersRouters;
