@@ -31,6 +31,7 @@ app.use(helmet());
 
 app.use("/penguins", penguinRouters);
 app.use("/users", usersRouter);
+app.use("/register", usersRouter);
 
 app.use(notFoundError);
 app.use(generalError);
