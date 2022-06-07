@@ -8,7 +8,7 @@ const { customError } = require("../utils/customError");
 const userLogin = async (req, res, next) => {
   try {
     const { username, password } = req.body.toString();
-    // const password = req.body.password.toString();
+
     debug(`Trying to login username: ${username}`);
 
     const user = await User.findOne({ username });
