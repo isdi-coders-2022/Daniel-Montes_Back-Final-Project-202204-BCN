@@ -30,8 +30,8 @@ app.use(express.json());
 app.use(helmet());
 
 app.use("/penguins", penguinRouters);
-app.use("/users", usersRouter);
-app.use("/register", usersRouter);
+app.post("/users/login", usersRouter);
+app.post("/register", usersRouter);
 
 app.use(notFoundError);
 app.use(generalError);

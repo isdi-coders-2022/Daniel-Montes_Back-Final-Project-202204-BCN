@@ -6,43 +6,48 @@ const User = require("../../db/models/User/User");
 const { customError } = require("../utils/customError");
 
 const userLogin = async (req, res, next) => {
-  try {
-    const { username, password } = req.body.toString();
+  const username = req.body.username.toString();
+  const password = req.body.password.toString();
 
-    debug(`Trying to login username: ${username}`);
+  if (!username || !password) {
+    const error = customError(400, "Missing username or password...");
 
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      const error = new Error("Incorrect password");
-      debug("User not found");
-      error.statusCode = 403;
-      error.customMessage = "Username or password is wrong";
-
-      next(error);
-      return;
-    }
-    const userData = {
-      username: user.username,
-      id: user.id,
-    };
-    const rightPassword = await bcrypt.compare(password, user.password);
-
-    if (!rightPassword) {
-      debug("Password not found");
-      const error = new Error("Incorrect password");
-      error.statusCode = 403;
-      error.customMessage = "Username or password is wrong";
-
-      next(error);
-      return;
-    }
-    const token = jsonwebtoken.sign(userData, process.env.JWT_SECRET);
-
-    res.status(200).json({ token });
-  } catch (err) {
-    const error = customError(500, "Internal server error", err.message);
     next(error);
+  } else {
+    try {
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        const error = new Error("Incorrect password");
+        debug("User not found");
+        error.statusCode = 403;
+        error.customMessage = "Username or password is wrong";
+
+        next(error);
+        return;
+      }
+      const userData = {
+        username: user.username,
+        id: user.id,
+      };
+      const rightPassword = await bcrypt.compare(password, user.password);
+
+      if (!rightPassword) {
+        debug("Password not found");
+        const error = new Error("Incorrect password");
+        error.statusCode = 403;
+        error.customMessage = "Username or password is wrong";
+
+        next(error);
+        return;
+      }
+      const token = jsonwebtoken.sign(userData, process.env.JWT_SECRET);
+
+      res.status(200).json({ token });
+    } catch (err) {
+      const error = customError(500, "Internal server error", err.message);
+      next(error);
+    }
   }
 };
 
