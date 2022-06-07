@@ -1,3 +1,4 @@
+const Penguin = require("../../../db/models/Penguin/Penguin");
 const { getPenguins } = require("./penguinControllers");
 
 const next = jest.fn();
@@ -16,5 +17,19 @@ describe("Given the loginUser controller", () => {
 
       expect(next).toHaveBeenCalled();
     });
+  });
+});
+describe("When getPenguins it's invoked", () => {
+  test("Then it should receive the next expected function", async () => {
+    Penguin.findOne = jest.fn().mockResolvedValue(true);
+    const req = { body: { username: "hello", password: "hello" } };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await getPenguins(req, res, next);
+
+    expect(next).toHaveBeenCalled();
   });
 });
