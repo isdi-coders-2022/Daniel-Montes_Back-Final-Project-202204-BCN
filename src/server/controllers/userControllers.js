@@ -71,7 +71,9 @@ const userRegister = async (req, res, next) => {
 
     await User.create(newUser);
 
-    res.status(201).json({ username });
+    const token = jsonwebtoken.sign(newUser, process.env.JWT_SECRET);
+
+    res.status(201).json({ token });
   } catch (error) {
     const createdError = customError(400, "Wrong user data..", error.message);
 
