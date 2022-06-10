@@ -4,12 +4,10 @@ const mongoose = require("mongoose");
 const connectDB = require("../../../db/index");
 const User = require("../../../db/models/User/User");
 const app = require("../../index");
-const firebase = require("../firebase/firebase");
 
 let mongoServer;
 let users;
 
-jest.mock = firebase;
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
 
