@@ -14,6 +14,6 @@ penguinRouters.get("/", getPenguins);
 penguinRouters.get("/penguins", getPenguins);
 penguinRouters.get("/favs", getFavsPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
-penguinRouters.post("/register", createPenguin);
+penguinRouters.post("/create", createPenguin);
 
 module.exports = penguinRouters;
