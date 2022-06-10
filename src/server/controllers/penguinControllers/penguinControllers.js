@@ -2,6 +2,13 @@ const debug = require("debug")("penguin:penguinControllers");
 const chalk = require("chalk");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
+const getPenguin = async (req, res) => {
+  const { idPenguin } = req.params;
+  const penguin = await Penguin.findById(idPenguin);
+
+  res.status(200).json({ penguin });
+};
+
 const getPenguins = async (req, res, next) => {
   try {
     const penguins = await Penguin.find();
@@ -55,4 +62,10 @@ const createPenguin = async (req, res) => {
   res.status(201).json(newPenguin);
 };
 
-module.exports = { getPenguins, deletePenguin, createPenguin, getFavsPenguins };
+module.exports = {
+  getPenguin,
+  getPenguins,
+  deletePenguin,
+  createPenguin,
+  getFavsPenguins,
+};
