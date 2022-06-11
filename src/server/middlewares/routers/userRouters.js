@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const { validate } = require("express-validation");
 
@@ -14,7 +13,7 @@ const {
 
 const usersRouters = express.Router();
 
-usersRouters.post("/login", validate(userLoginSchema), userLogin);
+usersRouters.post("/users/login", validate(userLoginSchema), userLogin);
 usersRouters.post("/register", validate(userRegisterSchema), userRegister);
 
 module.exports = usersRouters;

@@ -32,7 +32,7 @@ app.use(helmet());
 
 app.use(express.static("uploads"));
 
-app.post("/users", usersRouters);
+app.post("/users/login", usersRouters);
 app.use("/penguins", penguinRouters);
 
 app.use(notFoundError);
