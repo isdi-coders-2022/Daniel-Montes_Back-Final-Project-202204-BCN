@@ -23,6 +23,7 @@ const upload = multer({
 });
 
 penguinRouters.get("/", getPenguins);
+penguinRouters.get("/favs", getFavsPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
 penguinRouters.post(
   "/",
