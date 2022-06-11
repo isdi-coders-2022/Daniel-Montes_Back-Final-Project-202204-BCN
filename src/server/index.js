@@ -33,6 +33,7 @@ app.use("/penguins", penguinRouters);
 app.post("/users/login", usersRouter);
 app.post("/register", usersRouter);
 app.use("/favs", penguinRouters);
+app.post("/create", penguinRouters);
 
 app.use(notFoundError);
 app.use(generalError);
