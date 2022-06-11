@@ -33,7 +33,7 @@ app.use(helmet());
 app.use(express.static("uploads"));
 
 app.use("/users", usersRouters);
-app.use("/penguins", auth, penguinRouters);
+app.use("/penguins", penguinRouters);
 
 app.use(notFoundError);
 app.use(generalError);
