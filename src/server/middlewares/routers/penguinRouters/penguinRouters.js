@@ -21,11 +21,9 @@ const upload = multer({
     fieldSize: 8000000,
   },
 });
+
 penguinRouters.get("/", getPenguins);
-penguinRouters.get("/penguins", getPenguins);
-penguinRouters.get("/favs", getFavsPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
-penguinRouters.post("/create", createPenguin);
 penguinRouters.post(
   "/",
   upload.single("image"),

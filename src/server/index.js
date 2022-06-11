@@ -2,9 +2,10 @@ const express = require("express");
 const { default: helmet } = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
-const usersRouter = require("./middlewares/routers/userRouters");
+const usersRouters = require("./middlewares/routers/userRouters");
 const penguinRouters = require("./middlewares/routers/penguinRouters/penguinRouters");
 const { notFoundError, generalError } = require("./middlewares/errors/errors");
+const auth = require("./middlewares/auth/auth");
 
 const corsOptions = {
   origin: [
@@ -29,11 +30,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(helmet());
 
-app.use("/penguins", penguinRouters);
-app.post("/users/login", usersRouter);
-app.post("/register", usersRouter);
-app.use("/favs", penguinRouters);
-app.post("/create", penguinRouters);
+app.use(express.static("uploads"));
+
+app.use("/users", usersRouters);
+app.use("/penguins", auth, penguinRouters);
 
 app.use(notFoundError);
 app.use(generalError);
