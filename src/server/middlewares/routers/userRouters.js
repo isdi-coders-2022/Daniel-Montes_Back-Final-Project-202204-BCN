@@ -13,7 +13,7 @@ const {
 
 const usersRouters = express.Router();
 
-usersRouters.post("/users/login", validate(userLoginSchema), userLogin);
+usersRouters.post("/login", validate(userLoginSchema), userLogin);
 usersRouters.post("/register", validate(userRegisterSchema), userRegister);
 
 module.exports = usersRouters;

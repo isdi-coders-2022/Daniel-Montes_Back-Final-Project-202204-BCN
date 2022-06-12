@@ -26,6 +26,10 @@ const PenguinSchema = new Schema({
     type: Number,
     required: false,
   },
+  owner: {
+    type: Schema.Types.String,
+    ref: "User",
+  },
 });
 
 const Penguin = model("Penguin", PenguinSchema, "penguins");
