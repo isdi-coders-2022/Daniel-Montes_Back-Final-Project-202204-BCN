@@ -1,6 +1,7 @@
 const debug = require("debug")("penguin:penguinControllers");
 const chalk = require("chalk");
 const Penguin = require("../../../db/models/Penguin/Penguin");
+const User = require("../../../db/models/User/User");
 
 const getPenguin = async (req, res) => {
   const { idPenguin } = req.params;
@@ -12,7 +13,9 @@ const getPenguin = async (req, res) => {
 const getPenguins = async (req, res, next) => {
   try {
     const penguins = await Penguin.find();
-    debug(chalk.green("Penguins loading..."));
+
+    debug(chalk.green(`Loading full list of Penguins...`));
+    debug(chalk.green(`Total found: ${penguins.length}.`));
 
     res.status(200).json({ penguins });
   } catch (err) {
@@ -24,16 +27,19 @@ const getPenguins = async (req, res, next) => {
 };
 
 const getFavsPenguins = async (req, res, next) => {
+  const { userId } = req;
   try {
-    const penguins = await Penguin.find();
-    debug(chalk.green("Favs penguins loading..."));
+    const { username } = await User.findOne({ id: userId });
+    const penguins = await Penguin.find({ owner: username });
 
+    debug(chalk.green(`User ${username} asked for Favs list...`));
+    debug(chalk.green(`Total found: ${penguins.length}.`));
     res.status(200).json({ penguins });
-  } catch (err) {
-    err.message = "Error getting favs penguins";
-    err.code = 404;
+  } catch (error) {
+    error.code = 404;
+    error.customMessage = "Penguins not found";
 
-    next(err);
+    next(error);
   }
 };
 
@@ -62,10 +68,41 @@ const createPenguin = async (req, res) => {
   res.status(201).json(newPenguin);
 };
 
+const editPenguin = async (req, res) => {
+  const { idPenguin } = req.params;
+  const { name, likes, description, category } = req.body;
+  const { img, imgBackup } = req;
+
+  try {
+    const penguinToEdit = await Penguin.findById(idPenguin);
+    const penguinEdited = {
+      name,
+      likes,
+      description,
+      category,
+      image: img,
+      imageBackup: imgBackup,
+      owner: penguinToEdit.owner,
+    };
+    const newPenguin = await Penguin.findByIdAndUpdate(
+      idPenguin,
+      penguinEdited,
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(newPenguin);
+  } catch (error) {
+    error.customMessage = "Penguin not found";
+    error.code = 400;
+  }
+};
+
 module.exports = {
   getPenguin,
   getPenguins,
   deletePenguin,
   createPenguin,
   getFavsPenguins,
+  editPenguin,
 };

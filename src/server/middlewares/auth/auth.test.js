@@ -1,51 +1,37 @@
-const { auth } = require("./auth");
+const jwt = require("jsonwebtoken");
+const auth = require("./auth");
 
-const mockId = { name: "papito", username: "chocolatero", id: 3 };
+describe("Given a auth function", () => {
+  describe("When it receives a request with a valid authorization", () => {
+    test("Then it should call the received next function and it should add the property userId to the request", () => {
+      const req = {
+        headers: {
+          authorization: "Bearer hola",
+        },
+      };
+      const next = jest.fn();
 
-jest.mock("jsonwebtoken", () => ({
-  ...jest.requireActual("jsonwebtoken"),
-  verify: () => mockId,
-}));
+      jwt.verify = jest.fn().mockReturnValue({ id: 1 });
 
-describe("Given the auth function", () => {
-  describe("When it receives a request with a valid token", () => {
-    const req = {
-      headers: {
-        authorization: "Bearer ",
-      },
-    };
+      auth(req, null, next);
 
-    test("Then the 'next' function should be invoked", () => {
+      expect(next).toHaveBeenCalled();
+      expect(req).toHaveProperty("userId", { id: 1 });
+    });
+  });
+
+  describe("When it receives a request with a authorization withouth 'Bearer '", () => {
+    test("Then it should call the received next ", () => {
+      const req = {
+        headers: {
+          authorization: "Bea hola",
+        },
+      };
       const next = jest.fn();
 
       auth(req, null, next);
 
       expect(next).toHaveBeenCalled();
-    });
-
-    test("Then it should add to the received request the user id by the token", () => {
-      const next = () => {};
-
-      auth(req, null, next);
-
-      expect(req).toHaveProperty("userId", mockId);
-    });
-  });
-  describe("When it receives a request with an invalid token", () => {
-    const req = {
-      headers: {
-        authorization: "NotBear",
-      },
-    };
-
-    test("Then an error with 'Invalid authentication' message will be thrown", () => {
-      const expectedMessage = "Invalid authentication";
-      const expectedError = new Error(expectedMessage);
-      const next = jest.fn();
-
-      auth(req, null, next);
-
-      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });

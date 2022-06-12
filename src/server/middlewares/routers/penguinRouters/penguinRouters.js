@@ -9,6 +9,7 @@ const {
   createPenguin,
   getFavsPenguins,
   getPenguin,
+  editPenguin,
 } = require("../../../controllers/penguinControllers/penguinControllers");
 
 const firebaseUploads = require("../../firebase/firebase");
@@ -23,13 +24,16 @@ const upload = multer({
 });
 
 penguinRouters.get("/", getPenguins);
+penguinRouters.get("/favs", getFavsPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
+
 penguinRouters.post(
-  "/",
+  "/create",
   upload.single("image"),
   firebaseUploads,
   createPenguin
 );
 penguinRouters.get("/:idPenguin", getPenguin);
+penguinRouters.put("/:idPenguin", editPenguin);
 
 module.exports = penguinRouters;
