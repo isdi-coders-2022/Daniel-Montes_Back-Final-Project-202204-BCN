@@ -13,11 +13,7 @@ const connectionString = process.env.MONGODB_URI;
     await connectDB(connectionString);
     await initializeServer(port);
   } catch (error) {
-    debug(
-      `${
-        chalk.red("Exiting with error: ") + error
-      }\n${connectionString}: Port-> ${port}`
-    );
+    debug(chalk.red(`Exiting with error:  ${error}`));
     process.exit(1);
   }
 })();

@@ -1,25 +1,36 @@
 const debug = require("debug")("penguin:penguinControllers");
+const { doesNotMatch } = require("assert");
 const chalk = require("chalk");
+const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
-const User = require("../../../db/models/User/User");
 
-const getPenguin = async (req, res) => {
-  const { idPenguin } = req.params;
-  const penguin = await Penguin.findById(idPenguin);
+const getPenguin = async (req, res, next) => {
+  try {
+    const { idPenguin } = req.params;
+    debug(chalk.green(`User Request--> GET penguin id: ${idPenguin}`));
+    const penguin = await Penguin.findById(idPenguin);
 
-  res.status(200).json({ penguin });
+    debug(chalk.green(`Found: ${penguin}`));
+
+    res.status(200).json(penguin);
+  } catch (err) {
+    err.message = `ERROR: getting a penguin with id: ${req.params.idPenguin}`;
+    err.code = 404;
+
+    next(err);
+  }
 };
 
 const getPenguins = async (req, res, next) => {
   try {
     const penguins = await Penguin.find();
 
-    debug(chalk.green(`Loading full list of Penguins...`));
-    debug(chalk.green(`Total found: ${penguins.length}.`));
+    debug(chalk.green(`User Request--> GET full list of Penguins...`));
+    debug(chalk.green(`Total found: ${penguins.length} cute penguins.`));
 
     res.status(200).json({ penguins });
   } catch (err) {
-    err.message = "Error getting all the penguins";
+    err.message = "ERROR: getting all penguins";
     err.code = 404;
 
     next(err);
@@ -27,19 +38,32 @@ const getPenguins = async (req, res, next) => {
 };
 
 const getFavsPenguins = async (req, res, next) => {
-  const { userId } = req;
   try {
-    const { username } = await User.findOne({ id: userId });
-    const penguins = await Penguin.find({ owner: username });
+    const { authorization } = req.headers;
+    const token = authorization.replace("Bearer ", "");
+    const { username, id } = jwt.verify(token, process.env.JWT_SECRET);
 
-    debug(chalk.green(`User ${username} asked for Favs list...`));
+    debug(
+      chalk.green(
+        `User Request--> GET favs for username: ${username} (id: ${id})`
+      )
+    );
+
+    const penguins = await Penguin.find({ owner: id }).populate("owner");
+
     debug(chalk.green(`Total found: ${penguins.length}.`));
-    res.status(200).json({ penguins });
-  } catch (error) {
-    error.code = 404;
-    error.customMessage = "Penguins not found";
 
-    next(error);
+    if (penguins.length !== 0) {
+      res.status(200).json({ penguins });
+    } else {
+      const userError = new Error();
+      userError.customMessage = "No penguins found!";
+      userError.statusCode = 400;
+      next(userError);
+    }
+  } catch (err) {
+    err.message = "ERROR: getting all penguins";
+    err.code = 404;
   }
 };
 
@@ -48,6 +72,7 @@ const deletePenguin = async (req, res, next) => {
 
   try {
     await Penguin.findByIdAndDelete(idPenguin);
+    debug(chalk.green(`User Request--> DELETE penguin id: ${idPenguin}`));
 
     res.status(200).json({ msg: "Penguin deleted" });
     debug(chalk.green("Penguin deleted"));
@@ -61,14 +86,27 @@ const deletePenguin = async (req, res, next) => {
 };
 
 const createPenguin = async (req, res) => {
-  debug(chalk.green("received request to create a penguin..."));
-  const penguin = req.body;
-  const newPenguin = await Penguin.create(penguin);
+  try {
+    debug(chalk.green(`User Request--> CREATE penguin name: ${req.body.name}`));
+    const penguin = req.body;
+    const newPenguin = await Penguin.create(penguin);
 
-  res.status(201).json(newPenguin);
+    res.status(201).json(newPenguin);
+  } catch (err) {
+    debug(
+      chalk.green(
+        `ERROR CREATE New Fav: ${req.body.name}: id( ${req.body.id} )`
+      )
+    );
+
+    debug(chalk.green(`ERROR-> ${err} (err.code: ${err.code})`));
+    err.message = "Error creating the penguin";
+    err.code = 404;
+  }
 };
 
 const editPenguin = async (req, res) => {
+  debug(chalk.green(`User Request--> EDIT penguin id: ${req.body.name}`));
   const { idPenguin } = req.params;
   const { name, likes, description, category } = req.body;
   const { img, imgBackup } = req;
