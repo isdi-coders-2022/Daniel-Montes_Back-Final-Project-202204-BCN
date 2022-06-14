@@ -1,12 +1,14 @@
 const { notFoundError, generalError } = require("./errors");
 
+const req = jest.fn();
+
 describe("Given the notFoundError function", () => {
   describe("When its invoked", () => {
     test("Then it should call the next function with an error", () => {
       const nextFunction = jest.fn();
       const error = new Error();
 
-      notFoundError(null, null, nextFunction);
+      notFoundError(req, null, nextFunction);
 
       expect(nextFunction).toHaveBeenCalledWith(error);
     });

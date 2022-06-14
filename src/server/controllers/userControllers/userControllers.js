@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const chalk = require("chalk");
 const debug = require("debug")(chalk.yellow("penguin:userController"));
-const User = require("../../db/models/User/User");
-const { customError } = require("../utils/customError");
+const User = require("../../../db/models/User/User");
+const { customError } = require("../../utils/customError");
 
 const userLogin = async (req, res, next) => {
   const username = req.body.username.toString();

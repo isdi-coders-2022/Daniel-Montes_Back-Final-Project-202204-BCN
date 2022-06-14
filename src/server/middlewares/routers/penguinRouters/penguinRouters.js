@@ -24,16 +24,18 @@ const upload = multer({
 });
 
 penguinRouters.get("/", getPenguins);
-penguinRouters.get("/favs", getFavsPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
-
 penguinRouters.post(
-  "/create",
+  "/",
   upload.single("image"),
   firebaseUploads,
   createPenguin
 );
+
+penguinRouters.get("/favs", getFavsPenguins);
+
 penguinRouters.get("/:idPenguin", getPenguin);
+
 penguinRouters.put("/:idPenguin", editPenguin);
 
 module.exports = penguinRouters;

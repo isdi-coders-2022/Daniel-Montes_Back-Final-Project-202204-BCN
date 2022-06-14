@@ -7,6 +7,7 @@ const penguinSchema = {
     image: Joi.string().max(20),
     likes: Joi.number().integer(),
     description: Joi.string().max(200),
+    owner: Joi.array().items(Joi.string().max(20)),
   }),
 };
 

@@ -4,12 +4,12 @@ const { validate } = require("express-validation");
 const {
   userRegister,
   userLogin,
-} = require("../../controllers/userControllers");
+} = require("../../../controllers/userControllers/userControllers");
 
 const {
   userLoginSchema,
   userRegisterSchema,
-} = require("../../schemas/userSchema");
+} = require("../../../schemas/userSchema");
 
 const usersRouters = express.Router();
 

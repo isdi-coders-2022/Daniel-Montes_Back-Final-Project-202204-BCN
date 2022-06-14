@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
-const User = require("../../db/models/User/User");
+const User = require("../../../db/models/User/User");
 
 const { userLogin, userRegister } = require("./userControllers");
 
 const token = "030d715845518298a37ac8fa80f966eb7349d5e2";
-jest.mock("../../db/models/User/User", () => ({
+jest.mock("../../../db/models/User/User", () => ({
   findOne: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true),
 }));
 

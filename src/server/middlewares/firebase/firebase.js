@@ -63,6 +63,7 @@ const firebaseUploads = async (req, res, next) => {
   } else {
     req.imgBackup = "";
     req.img = "";
+
     next();
   }
 };
