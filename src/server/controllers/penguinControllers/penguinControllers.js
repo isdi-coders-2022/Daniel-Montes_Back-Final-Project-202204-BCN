@@ -1,5 +1,4 @@
 const debug = require("debug")("penguin:penguinControllers");
-const { doesNotMatch } = require("assert");
 const chalk = require("chalk");
 const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
@@ -43,13 +42,17 @@ const getFavsPenguins = async (req, res, next) => {
     const token = authorization.replace("Bearer ", "");
     const { username, id } = jwt.verify(token, process.env.JWT_SECRET);
 
-    debug(
-      chalk.green(
-        `User Request--> GET favs for username: ${username} (id: ${id})`
-      )
-    );
+    if (username) {
+      debug(
+        chalk.green(
+          `User Request--> GET favs for username: ${username} (id: ${id})`
+        )
+      );
+    } else {
+      debug(chalk.rede(`ERROR: User Request--> GET favs `));
+    }
 
-    const penguins = await Penguin.find({ owner: id }).populate("owner");
+    const penguins = await Penguin.find({ owner: id });
 
     debug(chalk.green(`Total found: ${penguins.length}.`));
 
@@ -75,7 +78,7 @@ const deletePenguin = async (req, res, next) => {
     debug(chalk.green(`User Request--> DELETE penguin id: ${idPenguin}`));
 
     res.status(200).json({ msg: "Penguin deleted" });
-    debug(chalk.green("Penguin deleted"));
+    debug(chalk.green(` Penguin id: ${idPenguin}  deleted`));
   } catch (err) {
     debug(chalk.red("Penguin id not found"));
     err.message = "Penguin id not found";
@@ -92,35 +95,37 @@ const createPenguin = async (req, res) => {
     const newPenguin = await Penguin.create(penguin);
 
     res.status(201).json(newPenguin);
+    debug(chalk.green(`Created fav! ${newPenguin.name}`));
   } catch (err) {
     debug(
-      chalk.green(
-        `ERROR CREATE New Fav: ${req.body.name}: id( ${req.body.id} )`
-      )
+      chalk.red(`ERROR CREATE New Fav: ${req.body.name}: id( ${req.body.id} )`)
     );
 
-    debug(chalk.green(`ERROR-> ${err} (err.code: ${err.code})`));
+    debug(chalk.red(`ERROR-> ${err} (err.code: ${err.code})`));
     err.message = "Error creating the penguin";
     err.code = 404;
   }
 };
 
 const editPenguin = async (req, res) => {
-  debug(chalk.green(`User Request--> EDIT penguin id: ${req.body.name}`));
+  debug(chalk.green(`User Request--> EDIT penguin: ${req.body.name}`));
+  const { authorization } = req.headers;
+  const token = authorization.replace("Bearer ", "");
+  const { id } = jwt.verify(token, process.env.JWT_SECRET);
+
   const { idPenguin } = req.params;
-  const { name, likes, description, category } = req.body;
-  const { img, imgBackup } = req;
 
   try {
     const penguinToEdit = await Penguin.findById(idPenguin);
+
     const penguinEdited = {
-      name,
-      likes,
-      description,
-      category,
-      image: img,
-      imageBackup: imgBackup,
-      owner: penguinToEdit.owner,
+      name: penguinToEdit.name,
+      likes: penguinToEdit.likes,
+      description: penguinToEdit.description,
+      category: penguinToEdit.category,
+      image: penguinToEdit.image,
+      imageBackup: penguinToEdit.imageBackup,
+      owner: id,
     };
     const newPenguin = await Penguin.findByIdAndUpdate(
       idPenguin,
@@ -129,7 +134,9 @@ const editPenguin = async (req, res) => {
         new: true,
       }
     );
+
     res.status(200).json(newPenguin);
+    debug(chalk.green(`Saved fav! ${newPenguin.name}`));
   } catch (error) {
     error.customMessage = "Penguin not found";
     error.code = 400;
