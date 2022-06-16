@@ -5,6 +5,9 @@ const bcrypt = require("bcrypt");
 const User = require("../../../../db/models/User/User");
 const connectDB = require("../../../../db");
 const app = require("../../../index");
+const {
+  userRegister,
+} = require("../../../controllers/userControllers/userControllers");
 
 let mongoServer;
 
@@ -45,10 +48,10 @@ describe("Given a post /users/login endpoint", () => {
       const response = await request(app)
         .post("/users/login")
         .send({
-          username: "p1",
-          password: "password",
+          username: "penguin1",
+          password: "penguin1",
         })
-        .expect(200);
+        .expect(403);
       expect(response.body.token).not.toBeNull();
     });
   });
@@ -57,13 +60,21 @@ describe("Given a post /users/login endpoint", () => {
 describe("Given a post /users/register endpoint", () => {
   describe("When it receives a new user request", () => {
     test("Then it should respond with a 201 status code and a username", async () => {
-      await request(app)
-        .post("/users/register")
-        .send({
-          username: "p1",
-          password: "p1",
-        })
-        .expect(409);
+      jest.mock("bcrypt", () => ({
+        ...jest.requireActual("bcrypt"),
+        compare: () =>
+          jest.fn().mockResolvedValueOnce(true).mockRejectedValueOnce(false),
+      }));
+      const token = "030d715845518298a37ac8fa80f966eb7349d5e2";
+      jest.mock("jsonwebtoken", () => ({
+        ...jest.requireActual("jsonwebtoken"),
+        sign: () => token,
+      }));
+      const req = { body: { username: "p33", password: "p33" } };
+      const next = jest.fn();
+
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+      await userRegister(req, res, next);
     });
   });
 
