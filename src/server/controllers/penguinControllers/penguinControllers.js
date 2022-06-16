@@ -6,12 +6,13 @@ const Penguin = require("../../../db/models/Penguin/Penguin");
 const getPenguin = async (req, res, next) => {
   try {
     const { idPenguin } = req.params;
-    debug(chalk.green(`User Request--> GET penguin id: ${idPenguin}`));
+    debug(chalk.green(`User Request--> GET penguin detail id: ${idPenguin}`));
     const penguin = await Penguin.findById(idPenguin);
 
     debug(chalk.green(`Found: ${penguin}`));
 
     res.status(200).json(penguin);
+    debug(chalk.green(`GET OK -> penguin detail name: ${penguin.name}`));
   } catch (err) {
     err.message = `ERROR: getting a penguin with id: ${req.params.idPenguin}`;
     err.code = 404;
@@ -28,10 +29,11 @@ const getPenguins = async (req, res, next) => {
     debug(chalk.green(`Total found: ${penguins.length} cute penguins.`));
 
     res.status(200).json({ penguins });
+    debug(chalk.green(`User Request--> GET  correct.`));
   } catch (err) {
     err.message = "ERROR: getting all penguins";
     err.code = 404;
-
+    debug(chalk.red(`ERROR User Request.`));
     next(err);
   }
 };
@@ -41,29 +43,17 @@ const getFavsPenguins = async (req, res, next) => {
     const { authorization } = req.headers;
     const token = authorization.replace("Bearer ", "");
     const { username, id } = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (username) {
-      debug(
-        chalk.green(
-          `User Request--> GET favs for username: ${username} (id: ${id})`
-        )
-      );
-    } else {
-      debug(chalk.rede(`ERROR: User Request--> GET favs `));
-    }
+    debug(
+      chalk.green(
+        `User Request--> GET favs for username: ${username} (id: ${id})`
+      )
+    );
 
     const penguins = await Penguin.find({ owner: id });
 
     debug(chalk.green(`Total found: ${penguins.length}.`));
 
-    if (penguins.length !== 0) {
-      res.status(200).json({ penguins });
-    } else {
-      const userError = new Error();
-      userError.customMessage = "No penguins found!";
-      userError.statusCode = 400;
-      next(userError);
-    }
+    res.status(200).json({ penguins });
   } catch (err) {
     err.message = "ERROR: getting all penguins";
     err.code = 404;
@@ -108,7 +98,7 @@ const createPenguin = async (req, res) => {
 };
 
 const editPenguin = async (req, res) => {
-  debug(chalk.green(`User Request--> EDIT penguin: ${req.body.name}`));
+  debug(chalk.green(`User Request--> EDIT penguin: ${req.body}`));
   const { authorization } = req.headers;
   const token = authorization.replace("Bearer ", "");
   const { id } = jwt.verify(token, process.env.JWT_SECRET);
