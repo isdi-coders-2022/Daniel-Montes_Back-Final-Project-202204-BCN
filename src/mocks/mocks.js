@@ -6,6 +6,7 @@ const mockPenguin = {
   image: "pingu.jpg",
   imageBackup: "pingu.jpg",
   id: "",
+  idPenguin: "",
 };
 
 const mockPenguins = [
@@ -17,6 +18,7 @@ const mockPenguins = [
     image: "pingu.jpg",
     imageBackup: "pingu.jpg",
     id: "2",
+    owner: "22",
   },
   {
     name: "penguin2",
@@ -40,10 +42,35 @@ const mockUsers = [
   },
 ];
 
+const mockUser = {
+  name: "penguin1",
+  username: "penguin1",
+  password: "penguin1",
+};
+
+const mockUserId = {
+  id: "22",
+};
+
 const newMockUser = {
-  name: "tetet",
   username: "tete",
   password: "tete",
 };
 
-module.exports = { mockPenguin, mockPenguins, newMockUser, mockUsers };
+const mockToken = "";
+
+const mockUserCredentials = {
+  username: "johndoe",
+  password: "johndoe",
+};
+
+module.exports = {
+  mockPenguin,
+  mockPenguins,
+  newMockUser,
+  mockUsers,
+  mockUserId,
+  mockUser,
+  mockToken,
+  mockUserCredentials,
+};

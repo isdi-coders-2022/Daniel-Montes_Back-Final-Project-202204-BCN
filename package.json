@@ -29,7 +29,7 @@
     "start": "node src",
     "test": "jest --watchAll=false --passWithNoTests",
     "start-dev": "nodemon src -q",
-    "test-coverage": "jest --coverage --watchAll=false",
+    "test-coverage": "jest --coverage --watchAll=true",
     "prepare": "husky install"
   },
   "repository": {
@@ -58,12 +58,15 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "./src/**/*.js",
-      "!.eslintrc.js",
-      "!coverage/**/*.js",
+      "src/**/*.js",
       "!src/index.js",
+      "!src/server/initializeServer.js",
+      "!src/server/index.js",
+      "!server/index.js",
       "!src/db/index.js",
-      "!src/server/initializeServer.js"
+      "!src/server/mocks/**",
+      "!.eslintrc.js",
+      "!src/server/utils/dictionaries/**"
     ]
   }
 }
