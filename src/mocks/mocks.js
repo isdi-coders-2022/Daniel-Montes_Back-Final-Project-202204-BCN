@@ -53,6 +53,7 @@ const mockUserId = {
 };
 
 const newMockUser = {
+  name: "t1",
   username: "tete",
   password: "tete",
 };

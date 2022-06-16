@@ -11,7 +11,7 @@ const {
 const { mockPenguins, mockPenguin } = require("../../../mocks/mocks");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
-const next = jest.fn();
+let next = jest.fn();
 
 jest.mock("bcrypt", () => ({
   ...jest.requireActual("bcrypt"),
@@ -36,12 +36,16 @@ describe("Given getPenguins middleware", () => {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-      Penguin.find = jest.fn().mockResolvedValue(mockPenguins);
+      const req = {
+        penguins: mockPenguins,
+      };
+      next = jest.fn();
+      Penguin.find = jest.fn().mockReturnThis(mockPenguins);
 
-      await getPenguins(null, res, null);
+      await getPenguins(req, res, null);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      expect(res.json).toHaveBeenCalledWith({ penguins: mockPenguins });
+      expect(res.json).toHaveBeenCalled();
     });
   });
 

@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../../../db/models/User/User");
+const { mockUser, newMockUser } = require("../../../mocks/mocks");
 
 const { userLogin, userRegister } = require("./userControllers");
 
@@ -22,7 +23,7 @@ jest.mock("jsonwebtoken", () => ({
 const next = jest.fn();
 
 describe("Given the loginUser controller", () => {
-  const req = { body: { username: "hello", password: "hello" } };
+  const req = { body: { username: "p33", password: "p33" } };
   describe("When it's invoked with a request object with the correct username and password", () => {
     test("Then it should call the response method with status 200, and a body containing a token will be received", async () => {
       const expectedStatus = 200;
@@ -76,6 +77,11 @@ describe("Given the loginUser controller", () => {
         json: jest.fn(),
       };
 
+      const req = {
+        body: { name: "penguin1xxx", username: "p2", password: "p2" },
+      };
+
+      User.create = jest.fn().mockReturnThis("ok");
       await userRegister(req, res, next);
 
       expect(next).toHaveBeenCalled();
