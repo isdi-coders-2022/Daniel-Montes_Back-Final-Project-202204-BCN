@@ -23,6 +23,10 @@ const userRegisterSchema = {
       .max(20)
       .messages({ message: "A password is required" })
       .required(),
+    name: Joi.string()
+      .max(20)
+      .messages({ message: "A name is required" })
+      .required(),
   }),
 };
 

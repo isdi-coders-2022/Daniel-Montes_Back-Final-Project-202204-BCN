@@ -55,12 +55,10 @@ describe("Given getPenguins middleware", () => {
         params: { idPenguin: "22" },
       };
 
-      const error = new Error("ERROR: getting all penguins");
-
       Penguin.find = jest.fn().mockResolvedValue(null);
       await getPenguins(req, null, next);
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).toHaveBeenCalled();
     });
   });
 });
@@ -72,12 +70,10 @@ describe("Given getFavsPenguins middleware", () => {
         params: { idPenguin: "22" },
       };
 
-      const error = new Error("ERROR: getting all penguins");
-
       Penguin.find = jest.fn().mockResolvedValue(null);
       await getPenguins(req, null, next);
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).toHaveBeenCalled();
     });
   });
 });
@@ -90,7 +86,9 @@ describe("Given deletePenguin middleware", () => {
         user: {
           username: "penguin1",
           password: "penguin1",
+          name: "penguin1",
         },
+        body: { name: "penguin1" },
       };
       const expectedResponse = {
         msg: "Penguin deleted",
@@ -133,6 +131,7 @@ describe("Given getPenguinById middleware", () => {
     test("Then it should call it's next function with 'Bad request'", async () => {
       const req = {
         params: { idPenguin: 22 },
+        body: { name: "penguin1" },
       };
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -153,6 +152,8 @@ describe("Given editPenguin middleware", () => {
     test("Then it should call it's response json status with 200 and json with the expected object", async () => {
       const req = {
         params: { idPenguin: "1" },
+        body: { name: "penguin1" },
+        query: { task: "test" },
         headers: {
           authorization: "Bearer hola",
         },

@@ -6,32 +6,38 @@ const PenguinSchema = new Schema({
     required: true,
     unique: true,
   },
-  description: {
+  category: {
     type: String,
     required: false,
   },
   image: {
-    type: String,
+    type: {},
     required: false,
   },
   imageBackup: {
-    type: String,
-    required: false,
-  },
-  category: {
-    type: String,
+    type: {},
     required: false,
   },
   likes: {
     type: Number,
     required: false,
   },
-  owner: [
+  likers: [
     {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
   ],
+  favs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  description: {
+    type: String,
+    required: false,
+  },
 });
 
 const Penguin = model("Penguin", PenguinSchema, "penguins");
