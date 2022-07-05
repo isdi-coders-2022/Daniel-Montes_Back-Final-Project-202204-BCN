@@ -47,7 +47,7 @@ const getPenguins = async (req, res, next) => {
     debug(message);
 
     message = chalk.green(`${logPrefixGet}Finished successfully.`);
-    debug();
+    debug(message);
 
     res.status(200).json({ penguins });
   } catch (err) {
