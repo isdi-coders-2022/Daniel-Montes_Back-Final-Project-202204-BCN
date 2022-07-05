@@ -44,9 +44,8 @@ const firebaseUploads = async (req, res, next) => {
 
         async (error) => {
           if (error) {
-            message = chalk.red(
-              `${logPrefix}Error: ${newImageName}. Error: ${error}`
-            );
+            const errorDescription = `Error: ${newImageName}. Error: ${error}`;
+            message = `${logPrefix}${chalk.red(errorDescription)}`;
             debug(message);
 
             next(error);
@@ -67,9 +66,8 @@ const firebaseUploads = async (req, res, next) => {
 
             async (readError, readFile) => {
               if (readError) {
-                message = `${logPrefix}${chalk.red(
-                  `Error: ${newImageName}. Error: ${error}`
-                )}`;
+                const errorDescription = `Error: ${newImageName}. Error: ${error}`;
+                message = `${logPrefix}${chalk.red(errorDescription)}`;
                 debug(message);
 
                 next(readError);
@@ -83,6 +81,7 @@ const firebaseUploads = async (req, res, next) => {
               debug(message);
 
               const storageRef = ref(storage, newImageName);
+
               message = `${logPrefix}${chalk.green(
                 `Image Ref: ${newImageName}`
               )}`;
@@ -110,9 +109,8 @@ const firebaseUploads = async (req, res, next) => {
         }
       );
     } else {
-      message = `${logPrefix}${chalk.red(
-        `Error: ${newImageName}.No image found`
-      )}`;
+      const errorDescription = `Error: ${newImageName}.No image found`;
+      message = `${logPrefix}${chalk.red(errorDescription)}`;
       debug(message);
 
       req.imgBackup = "";
@@ -121,7 +119,8 @@ const firebaseUploads = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    message = `${logPrefix}${chalk.red(`Error: ${err.message}`)}`;
+    const errorDescription = chalk.red(`Error: ${err.message}`);
+    message = `${logPrefix}${errorDescription}`;
     debug(message);
   }
 };
