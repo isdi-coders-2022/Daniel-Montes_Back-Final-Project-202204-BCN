@@ -20,29 +20,25 @@ const usersRouters = express.Router();
 const beforeLogin = () => {
   try {
     debug(chalk.green(`${logPrefix} LOGIN: Validating user schema`));
-    const result = validate(userLoginSchema);
-    return result;
+    return validate(userLoginSchema);
   } catch (error) {
     debug(chalk.red(`${logPrefix} LOGIN: ERROR Validating user schema`));
-    const result = validate(userLoginSchema);
-    return result;
+    return validate(userLoginSchema);
   }
 };
 
 const beforeRegister = () => {
   try {
     debug(chalk.green(`${logPrefix} REGISTER: Validating user schema`));
-    const result = validate(userRegisterSchema);
-    return result;
+    return validate(userRegisterSchema);
   } catch (error) {
     debug(chalk.red(`${logPrefix} REGISTER: ERROR Validating user schema`));
-    const result = validate(userRegisterSchema);
-    return result;
+    return validate(userRegisterSchema);
   }
 };
 
-usersRouters.post("/login", beforeLogin(userLogin), userLogin);
-usersRouters.post("/register", beforeRegister(userRegister), userRegister);
+usersRouters.post("/login", beforeLogin(), userLogin);
+usersRouters.post("/register", beforeRegister(), userRegister);
 usersRouters.get("/:UserId", getUser);
 usersRouters.get("/edit/:UserId", getUser);
 

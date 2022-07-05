@@ -10,17 +10,6 @@ jest.mock("firebase/storage", () => ({
 }));
 
 describe("Given a firebaseUploads middleware", () => {
-  describe("When it receives a request without a file", () => {
-    test("Then it should call the received next function", async () => {
-      const req = { file: null };
-
-      const next = jest.fn();
-      await firebaseUploads(req, null, next);
-
-      expect(next).toHaveBeenCalled();
-    });
-  });
-
   describe("When the rename method fails", () => {
     test("Then it should call the received next function with the error 'renameError'", async () => {
       const req = { file: { filename: "file" } };

@@ -13,6 +13,8 @@ const {
 const fs = require("fs");
 const path = require("path");
 
+let message = "";
+
 const firebaseUploads = async (req, res, next) => {
   const { file } = req;
   const logPrefix = "User Request--> FIREBASE: ";
@@ -28,12 +30,13 @@ const firebaseUploads = async (req, res, next) => {
 
   try {
     const firebaseApp = initializeApp(firebaseConfig);
-    const newImageName = `${file ? `${file.originalname}` : ""}`;
+    const newImageName = `${file} || ${file.originalname}`;
+    message = `Receiving image... ${newImageName}`;
+    debug(`${logPrefix}${chalk.green(message)}`);
 
-    debug(`${logPrefix}${chalk.green(`Receiving image... ${newImageName}`)}`);
-
+    message = `Received image: ${newImageName}`;
     if (file) {
-      debug(`${logPrefix}${chalk.green(`Received image: ${newImageName}`)}`);
+      debug(`${logPrefix}${chalk.green(message)}`);
 
       await fs.rename(
         path.join("uploads", "images", file.filename),
@@ -41,89 +44,85 @@ const firebaseUploads = async (req, res, next) => {
 
         async (error) => {
           if (error) {
-            debug(
-              `${logPrefix}${chalk.red(
-                `Error: ${newImageName}. Error: ${error}`
-              )}`
+            message = chalk.red(
+              `${logPrefix}Error: ${newImageName}. Error: ${error}`
             );
+            debug(message);
 
             next(error);
             return;
           }
-          debug(
-            `${logPrefix}${chalk.green(`Uploading image: ${newImageName}`)}`
-          );
-          try {
-            debug(
-              `${logPrefix}${chalk.green(`Reading image: ${newImageName}`)}`
-            );
+          message = `${logPrefix}${chalk.green(
+            `Uploading image: ${newImageName}`
+          )}`;
+          message = debug(message);
 
-            await fs.readFile(
-              path.join("uploads", "images", newImageName),
+          message = `${logPrefix}${chalk.green(
+            `Reading image: ${newImageName}`
+          )}`;
+          debug(message);
 
-              async (readError, readFile) => {
-                if (readError) {
-                  debug(
-                    `${logPrefix}${chalk.red(
-                      `Error: ${newImageName}. Error: ${error}`
-                    )}`
-                  );
+          await fs.readFile(
+            path.join("uploads", "images", newImageName),
 
-                  next(readError);
-                  return;
-                }
+            async (readError, readFile) => {
+              if (readError) {
+                message = `${logPrefix}${chalk.red(
+                  `Error: ${newImageName}. Error: ${error}`
+                )}`;
+                debug(message);
 
-                const storage = getStorage(firebaseApp);
-                debug(`${logPrefix}${chalk.green(`Storage: ${newImageName}`)}`);
-                const storageRef = ref(storage, newImageName);
-                debug(
-                  `${logPrefix}${chalk.green(`Image Ref: ${newImageName}`)}`
-                );
-
-                try {
-                  debug(`${logPrefix}${chalk.green(`UploadBytes start...`)}`);
-                  await uploadBytes(storageRef, readFile);
-                } catch (errorUploadBytes) {
-                  debug(
-                    `${logPrefix}${chalk.red(
-                      `Error: ${errorUploadBytes.message}`
-                    )}`
-                  );
-                }
-                debug(
-                  `${logPrefix}${chalk.green(
-                    `getDownloadURL start: ${newImageName}`
-                  )}`
-                );
-                const firebaseImageURL = await getDownloadURL(storageRef);
-
-                req.imgBackup = firebaseImageURL;
-                req.img = path.join("images", newImageName);
-                debug(`${logPrefix}${chalk.green(`Uploaded successfully.`)}`);
-
-                next();
+                next(readError);
+                return;
               }
-            );
-          } catch (err) {
-            debug(
-              `${logPrefix}${chalk.red(
-                `Error: ${newImageName}. Error: ${error.message}`
-              )}`
-            );
-          }
+
+              const storage = getStorage(firebaseApp);
+              message = `${logPrefix}${chalk.green(
+                `Storage: ${newImageName}`
+              )}`;
+              debug(message);
+
+              const storageRef = ref(storage, newImageName);
+              message = `${logPrefix}${chalk.green(
+                `Image Ref: ${newImageName}`
+              )}`;
+              debug(message);
+
+              message = `${logPrefix}${chalk.green(`UploadBytes start...`)}`;
+              debug(message);
+
+              await uploadBytes(storageRef, readFile);
+              message = `${logPrefix}${chalk.green(
+                `getDownloadURL start: ${newImageName}`
+              )}`;
+              debug(message);
+
+              const firebaseImageURL = await getDownloadURL(storageRef);
+
+              req.imgBackup = firebaseImageURL;
+              req.img = path.join("images", newImageName);
+              message = `${logPrefix}${chalk.green(`Uploaded successfully.`)}`;
+              debug(message);
+
+              next();
+            }
+          );
         }
       );
     } else {
-      debug(
-        `${logPrefix}${chalk.red(`Error: ${newImageName}.No image found`)}`
-      );
+      message = `${logPrefix}${chalk.red(
+        `Error: ${newImageName}.No image found`
+      )}`;
+      debug(message);
+
       req.imgBackup = "";
       req.img = "";
 
       next();
     }
   } catch (err) {
-    debug(`${logPrefix}${chalk.red(`Error: ${err.message}`)}`);
+    message = `${logPrefix}${chalk.red(`Error: ${err.message}`)}`;
+    debug(message);
   }
 };
 
