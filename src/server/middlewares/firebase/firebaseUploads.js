@@ -37,7 +37,8 @@ const firebaseUploads = async (req, res, next) => {
 
     message = `Received image: ${newImageName}`;
     if (file) {
-      debug(`${logPrefix}${chalk.green(message)}`);
+      message = `${logPrefix}${message}`;
+      debug(chalk.green(message));
 
       await fs.rename(
         path.join("uploads", "images", file.filename),
@@ -84,18 +85,18 @@ const firebaseUploads = async (req, res, next) => {
               debug(chalk.green(message));
 
               await uploadBytes(storageRef, readFile);
-              messDescription = `${logPrefix}getDownloadURL start: ${newImageName}`;
-              message = chalk.green(messDescription);
-              debug(message);
+
+              messDescription = `getDownloadURL start: ${newImageName}`;
+              message = `${logPrefix}${messDescription}`;
+              debug(chalk.green(message));
 
               const firebaseImageURL = await getDownloadURL(storageRef);
 
               req.imgBackup = firebaseImageURL;
               req.img = path.join("images", newImageName);
 
-              messDescription = `${logPrefix}Uploaded successfully.`;
-              message = chalk.green(messDescription);
-              debug(message);
+              message = `${logPrefix}Uploaded successfully.`;
+              debug(chalk.green(message));
 
               next();
             }
@@ -104,8 +105,8 @@ const firebaseUploads = async (req, res, next) => {
       );
     } else {
       const errorDescription = `Error: ${newImageName}.No image found`;
-      message = `${logPrefix}${chalk.red(errorDescription)}`;
-      debug(message);
+      message = `${logPrefix}${errorDescription}`;
+      debug(chalk.red(message));
 
       req.imgBackup = "";
       req.img = "";
@@ -113,9 +114,8 @@ const firebaseUploads = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    const errorDescription = chalk.red(`Error: ${err.message}`);
-    message = `${logPrefix}${errorDescription}`;
-    debug(message);
+    message = `${logPrefix}Error: ${err.message}`;
+    debug(chalk.red(message));
   }
 };
 
