@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const firebaseUploads = require("./firebase");
+const firebaseUploads = require("./firebaseUploads");
 
 jest.mock("firebase/storage", () => ({
   ref: jest.fn().mockReturnValue("checkRef"),

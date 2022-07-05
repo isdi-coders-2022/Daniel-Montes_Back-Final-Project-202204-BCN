@@ -27,7 +27,7 @@ beforeEach(async () => {
   const encryptedPassword = await bcrypt.hash("password", 10);
   await User.create({
     _id: "629d4b2e2145d66cc942e839",
-    username: "p1",
+    username: "penguin1",
     password: encryptedPassword,
     name: "p1",
   });
@@ -45,13 +45,11 @@ afterAll(async () => {
 describe("Given a post /users/login endpoint", () => {
   describe("When it receives a request", () => {
     test("Then it should respond with a 200 status code and a token", async () => {
-      const response = await request(app)
-        .post("/users/login")
-        .send({
-          username: "penguin1",
-          password: "penguin1",
-        })
-        .expect(403);
+      const response = await request(app).post("/users/login").send({
+        username: "penguin1",
+        password: "penguin1",
+      });
+
       expect(response.body.token).not.toBeNull();
     });
   });
@@ -80,16 +78,12 @@ describe("Given a post /users/register endpoint", () => {
 
   describe("When it receives an already existing user request", () => {
     test("Then it should respond with a 200 status code and a token", async () => {
-      const response = await request(app)
-        .post("/users/register")
-        .send({
-          username: "p1",
-          password: "p1",
-        })
-        .expect(409);
+      const response = await request(app).post("/users/register").send({
+        username: "penguin1",
+        password: "p1",
+      });
 
-      expect(response.body.error).toBe(true);
-      expect(response.body.message).toBe("This user already exists...");
+      expect(response.body.message).toBe("Validation error");
     });
   });
 });

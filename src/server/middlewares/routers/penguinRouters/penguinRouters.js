@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-
 const {
   getPenguins,
   deletePenguin,
@@ -12,7 +11,7 @@ const {
   editPenguin,
 } = require("../../../controllers/penguinControllers/penguinControllers");
 
-const firebaseUploads = require("../../firebase/firebase");
+const firebaseUploads = require("../../firebase/firebaseUploads");
 
 const penguinRouters = express.Router();
 
@@ -23,19 +22,17 @@ const upload = multer({
   },
 });
 
-penguinRouters.get("/", getPenguins);
-penguinRouters.delete("/:idPenguin", deletePenguin);
 penguinRouters.post(
-  "/",
+  "/create",
   upload.single("image"),
   firebaseUploads,
   createPenguin
 );
 
+penguinRouters.get("/", getPenguins);
+penguinRouters.delete("/:idPenguin", deletePenguin);
 penguinRouters.get("/favs", getFavsPenguins);
-
 penguinRouters.get("/:idPenguin", getPenguin);
-
 penguinRouters.put("/:idPenguin", editPenguin);
 
 module.exports = penguinRouters;
