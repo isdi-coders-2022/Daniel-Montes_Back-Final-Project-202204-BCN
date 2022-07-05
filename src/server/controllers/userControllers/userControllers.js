@@ -24,11 +24,12 @@ const userLogin = async (req, res, next) => {
       const user = await User.findOne({ username });
 
       if (!user) {
-        const error = new Error("Incorrect password");
-        debug("User not found");
+        const message = `${logPrefix} LOGIN: Username or password is wrong`;
+        const error = new Error(message);
+
         error.statusCode = 403;
-        error.customMessage = `${logPrefix} LOGIN: Username or password is wrong`;
-        debug(`${logPrefix} ${error.customMessage}`);
+        error.customMessage = chalk.red(message);
+        debug(chalk.red(message));
 
         next(error);
         return;
@@ -44,12 +45,14 @@ const userLogin = async (req, res, next) => {
       const rightPassword = await bcrypt.compare(password, user.password);
 
       if (!rightPassword) {
-        debug(`${logPrefix} Password not found`);
-        const error = new Error("Incorrect password");
-        error.statusCode = 403;
-        error.customMessage = `${logPrefix} LOGIN: Username or password is wrong`;
+        const message = `${logPrefix}LOGIN: Password not found`;
+        debug(message);
 
-        debug(chalk.red(`${logPrefix} ERROR: ${error.message}`));
+        const error = new Error(message);
+        error.statusCode = 403;
+        error.customMessage = message;
+
+        debug(chalk.red(message));
 
         next(error);
         return;
@@ -65,8 +68,10 @@ const userLogin = async (req, res, next) => {
 
       res.status(200).json({ token });
     } catch (err) {
-      const error = customError(500, "Internal server error", err.message);
-      debug(chalk.red(`${logPrefix} LOGIN: ERROR ${err.message}`));
+      const message = `${logPrefix} LOGIN: ERROR ${err.message}`;
+      const error = customError(500, message, err.message);
+
+      debug(chalk.red(message));
 
       next(error);
     }
@@ -76,16 +81,18 @@ const userLogin = async (req, res, next) => {
 const userRegister = async (req, res, next) => {
   const { name, username, password } = req.body;
   const { img, imgBackup } = req;
+  let message = `${logPrefix} REGISTER: ${username}`;
 
-  debug(chalk.green(`${logPrefix} REGISTER: ${username}`));
+  debug(chalk.green(message));
+
   const user = await User.findOne({ username });
 
   if (user) {
-    const error = customError(
-      409,
-      `${logPrefix} REGISTER: This user already exists...`
-    );
-    debug(chalk.red(`${logPrefix} REGISTER: ERROR user already exists.`));
+    message += `. This user already exists...`;
+
+    const error = customError(409, message);
+    debug(chalk.red(message));
+
     next(error);
     return;
   }
@@ -108,12 +115,10 @@ const userRegister = async (req, res, next) => {
 
     res.status(201).json({ token });
   } catch (error) {
-    debug(chalk.red(`${logPrefix} REGISTER: ERROR ${error.message}`));
-    const createdError = customError(
-      400,
-      `${logPrefix} REGISTER: Wrong user data..`,
-      error.message
-    );
+    message = `${logPrefix} REGISTER: ERROR ${error.message}`;
+
+    debug(chalk.red(message));
+    const createdError = customError(400, message, error.message);
 
     next(createdError);
   }
