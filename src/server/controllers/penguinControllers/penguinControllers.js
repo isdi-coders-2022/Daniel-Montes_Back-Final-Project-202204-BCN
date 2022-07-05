@@ -11,14 +11,21 @@ const logPrefixgetFavs = `${logPrefix}GET favs: `;
 const logPrefixgetCreate = `${logPrefix}CRETE: `;
 const logPrefixgetEdit = `${logPrefix}EDIT: `;
 
+let message = "";
+
 const getPenguin = async (req, res, next) => {
   try {
     const { idPenguin } = req.params;
-    debug(chalk.green(`${logPrefixDetail}Penguin id: ${String(idPenguin)}`));
-    const penguin = await Penguin.findById(idPenguin);
+    message = chalk.green(`${logPrefixDetail}Penguin id: ${String(idPenguin)}`);
+    debug(message);
 
-    debug(chalk.green(`${logPrefixDetail}Found: ${penguin.name}`));
-    debug(chalk.green(`${logPrefixDetail}Finished successfully.`));
+    const penguin = await Penguin.findById(idPenguin);
+    message = chalk.green(`${logPrefixDetail}Found: ${penguin.name}`);
+    debug(message);
+
+    message = chalk.green(`${logPrefixDetail}Finished successfully.`);
+    debug(message);
+
     res.status(200).json(penguin);
   } catch (err) {
     err.message = `${logPrefix}Penguin id: ${req.params.idPenguin}`;
@@ -30,19 +37,26 @@ const getPenguin = async (req, res, next) => {
 
 const getPenguins = async (req, res, next) => {
   try {
-    debug(chalk.green(`${logPrefixGet}Penguins...`));
+    message = chalk.green(`${logPrefixGet}Penguins...`);
+    debug(message);
+
     const penguins = await Penguin.find();
-    debug(
-      chalk.green(
-        `${logPrefixGet}Total found: ${penguins.length} cute penguins.`
-      )
+    message = chalk.green(
+      `${logPrefixGet}Total found: ${penguins.length} cute penguins.`
     );
-    debug(chalk.green(`${logPrefixGet}Finished successfully.`));
+    debug(message);
+
+    message = chalk.green(`${logPrefixGet}Finished successfully.`);
+    debug();
+
     res.status(200).json({ penguins });
   } catch (err) {
     err.message = `${logPrefixGet}Getting all penguins for user: ${req.params.user}`;
     err.code = 404;
-    debug(chalk.red(`${logPrefixGet}ERROR: ${err.message}`));
+
+    message = chalk.red(`${logPrefixGet}ERROR: ${err.message}`);
+    debug(message);
+
     next(err);
   }
 };
@@ -52,13 +66,20 @@ const getFavsPenguins = async (req, res, next) => {
     const { authorization } = req.headers;
     const token = authorization.replace("Bearer ", "");
     const { username, id } = jwt.verify(token, process.env.JWT_SECRET);
-    debug(chalk.green(`${logPrefixgetFavs}Username: ${username}.`));
+
+    message = chalk.green(`${logPrefixgetFavs}Username: ${username}.`);
+    debug(message);
 
     const penguins = await Penguin.find({ favs: id });
 
-    debug(chalk.green(`${logPrefixgetFavs}Total found: ${penguins.length}.`));
+    message = chalk.green(
+      `${logPrefixgetFavs}Total found: ${penguins.length}.`
+    );
+    debug(message);
 
-    debug(chalk.green(`${logPrefixgetFavs}Finished successfully.`));
+    message = chalk.green(`${logPrefixgetFavs}Finished successfully.`);
+    debug(message);
+
     res.status(200).json({ penguins });
   } catch (err) {
     err.message = `${logPrefixgetFavs} getFavsPenguins() getting all penguins`;
@@ -69,18 +90,23 @@ const getFavsPenguins = async (req, res, next) => {
 };
 
 const deletePenguin = async (req, res, next) => {
-  debug(chalk.green(`${logPrefixDelete}Penguin name: ${req.body.name}`));
+  message = chalk.green(`${logPrefixDelete}Penguin name: ${req.body.name}`);
+  debug(message);
 
   try {
     const { idPenguin } = req.params;
     await Penguin.findByIdAndDelete(idPenguin);
 
-    debug(
-      chalk.green(`${logPrefixDelete}Penguin id: ${idPenguin}  successfully.`)
+    message = chalk.green(
+      `${logPrefixDelete}Penguin id: ${idPenguin}  successfully.`
     );
+    debug(message);
+
     res.status(200).json({ msg: "Penguin deleted" });
   } catch (err) {
-    debug(chalk.red(`${logPrefixDelete}Error: Penguin id not found`));
+    message = chalk.red(`${logPrefixDelete}Error: Penguin id not found`);
+    debug(message);
+
     err.message = `${logPrefixDelete}Penguin id not found`;
     err.code = 404;
 
@@ -89,25 +115,30 @@ const deletePenguin = async (req, res, next) => {
 };
 
 const createPenguin = async (req, res) => {
-  debug(chalk.green(`${logPrefixgetCreate}Name: ${req.body.name}`));
+  message = chalk.green(`${logPrefixgetCreate}Name: ${req.body.name}`);
+  debug(message);
+
   const { penguin } = req.body;
   try {
     const newPenguin = await Penguin.create({ penguin });
 
-    debug(
-      chalk.green(`${logPrefixgetCreate}${newPenguin.name} added successfully`)
+    message = chalk.green(
+      `${logPrefixgetCreate}${newPenguin.name} added successfully`
     );
+    debug(message);
+
     res.status(201).json(newPenguin);
   } catch (err) {
-    debug(
-      chalk.red(
-        `${logPrefixgetCreate}Error saving new penguin: ${req.body.name} ${penguin} )`
-      )
+    message = chalk.red(
+      `${logPrefixgetCreate}Error saving new penguin: ${req.body.name} ${penguin} )`
     );
+    debug(message);
 
-    debug(
-      chalk.red(`${logPrefixgetCreate}ERROR-> ${err} (err.code: ${err.code})`)
+    message = chalk.red(
+      `${logPrefixgetCreate}ERROR-> ${err} (err.code: ${err.code})`
     );
+    debug(message);
+
     err.message = `${logPrefixgetCreate}ERROR-> ${err} (err.code: ${err.code})`;
     err.code = 404;
   }
@@ -128,23 +159,31 @@ const editPenguin = async (req, res, next) => {
       imageBackup: req.body.imageBackup || "",
       description: req.body.description,
     };
-
-    debug(chalk.green(`${logPrefixgetEdit}${penguinEdited.name}`));
+    message = chalk.green(`${logPrefixgetEdit}${penguinEdited.name}`);
+    debug(message);
 
     await Penguin.findByIdAndUpdate(idPenguin, penguinEdited, {
       new: true,
     }).catch((error) => {
-      const message = `${logPrefixgetEdit}${type}. ERROR ${`${penguinEdited.name}`}. Error: ${
+      message = `${logPrefixgetEdit}${type}. ERROR ${`${penguinEdited.name}`}. Error: ${
         error.message
       }`;
       debug(chalk.red(message));
     });
-    debug(chalk.green(`${logPrefix} UPDATE: ${type}, finished successfully.`));
+
+    message = chalk.green(
+      `${logPrefix} UPDATE: ${type}, finished successfully.`
+    );
+    debug(message);
+
     res.status(200).json(penguinEdited);
   } catch (error) {
-    debug(
-      chalk.red(`${logPrefixgetEdit}ERROR-> ${error} (err.code: ${error.code})`)
+    message = chalk.red(
+      `${logPrefixgetEdit}ERROR-> ${error} (err.code: ${error.code})`
     );
+
+    debug(message);
+
     error.customMessage = `${logPrefix} UPDATE: ${type}.  ERROR Penguin not found`;
     error.code = 400;
 
