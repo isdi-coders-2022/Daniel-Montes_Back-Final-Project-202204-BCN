@@ -8,7 +8,7 @@ const logPrefixDetail = `${logPrefix}GET Detail: `;
 const logPrefixGet = `${logPrefix}GET: `;
 const logPrefixDelete = `${logPrefix}DELETE: `;
 const logPrefixgetFavs = `${logPrefix}GET favs: `;
-const logPrefixgetCreate = `${logPrefix}CRETE: `;
+const logPrefixgetCreate = `${logPrefix}CREATE: `;
 const logPrefixgetEdit = `${logPrefix}EDIT: `;
 
 let message = "";
@@ -90,21 +90,19 @@ const getFavsPenguins = async (req, res, next) => {
 };
 
 const deletePenguin = async (req, res, next) => {
-  message = chalk.green(`${logPrefixDelete}Penguin name: ${req.body.name}`);
+  const { idPenguin } = req.params;
+  message = chalk.green(`${logPrefixDelete}id: ${idPenguin}`);
   debug(message);
 
   try {
-    const { idPenguin } = req.params;
     await Penguin.findByIdAndDelete(idPenguin);
 
-    message = chalk.green(
-      `${logPrefixDelete}Penguin id: ${idPenguin}  successfully.`
-    );
+    message = chalk.green(`${logPrefixDelete}id: ${idPenguin} successfully.`);
     debug(message);
 
     res.status(200).json({ msg: "Penguin deleted" });
   } catch (err) {
-    message = chalk.red(`${logPrefixDelete}Error: Penguin id not found`);
+    message = chalk.red(`${logPrefixDelete}ERROR: Penguin id not found`);
     debug(message);
 
     err.message = `${logPrefixDelete}Penguin id not found`;
@@ -130,7 +128,7 @@ const createPenguin = async (req, res) => {
     res.status(201).json(newPenguin);
   } catch (err) {
     message = chalk.red(
-      `${logPrefixgetCreate}Error saving new penguin: ${req.body.name} ${penguin} )`
+      `${logPrefixgetCreate}Error saving new penguin: ${req.body.name})`
     );
     debug(message);
 
