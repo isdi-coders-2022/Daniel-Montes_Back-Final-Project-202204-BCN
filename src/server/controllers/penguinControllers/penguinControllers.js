@@ -9,7 +9,7 @@ const logPrefixGet = `${logPrefix}GET: `;
 const logPrefixDelete = `${logPrefix}DELETE: `;
 const logPrefixgetFavs = `${logPrefix}GET favs: `;
 const logPrefixgetCreate = `${logPrefix}CREATE: `;
-const logPrefixgetEdit = `${logPrefix}EDIT: `;
+const logPrefixgetEdit = `${logPrefix}UPDATE: `;
 
 let message = "";
 
@@ -151,7 +151,7 @@ const editPenguin = async (req, res, next) => {
       likes: req.body.likes,
       likers: req.body.likers,
       favs: req.body.favs,
-      image: req.body.image,
+      image: req.body.image || "",
       imageBackup: req.body.imageBackup || "",
       description: req.body.description,
     };
@@ -165,12 +165,13 @@ const editPenguin = async (req, res, next) => {
       debug(chalk.red(message));
     });
 
-    message = chalk.green(
-      `${logPrefix} UPDATE: ${type}, finished successfully.`
-    );
+    message = chalk.green(`${logPrefix} UPDATE: ${type}.`);
     debug(message);
 
     res.status(200).json(penguinEdited);
+
+    message = chalk.green(`${logPrefix} UPDATE: Finished successfully.`);
+    debug(message);
   } catch (error) {
     message = chalk.red(
       `${logPrefixgetEdit}ERROR-> ${error} (err.code: ${error.code})`
