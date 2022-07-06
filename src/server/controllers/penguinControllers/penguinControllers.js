@@ -128,16 +128,14 @@ const createPenguin = async (req, res) => {
     res.status(201).json(newPenguin);
   } catch (err) {
     message = chalk.red(
-      `${logPrefixgetCreate}Error saving new penguin: ${req.body.name})`
+      `${logPrefixgetCreate}Error saving new penguin: ${req.body.name}`
     );
     debug(message);
 
-    message = chalk.red(
-      `${logPrefixgetCreate}ERROR-> ${err} (err.code: ${err.code})`
-    );
+    message = chalk.red(`${logPrefixgetCreate}ERROR-> ${err}`);
     debug(message);
 
-    err.message = `${logPrefixgetCreate}ERROR-> ${err} (err.code: ${err.code})`;
+    err.message = `${logPrefixgetCreate}ERROR-> ${err}`;
     err.code = 404;
   }
 };

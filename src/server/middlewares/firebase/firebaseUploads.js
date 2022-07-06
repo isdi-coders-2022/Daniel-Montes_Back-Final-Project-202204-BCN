@@ -33,10 +33,10 @@ const firebaseUploads = async (req, res, next) => {
     const firebaseApp = initializeApp(firebaseConfig);
     const fullName = `${Date.now()}${file.originalname}`;
     const newImageName = fullName || "";
-    message = `Receiving image... ${newImageName}`;
+    message = `Receiving... ${newImageName}`;
     debug(`${logPrefix}${chalk.green(message)}`);
 
-    message = `Received image: ${newImageName}`;
+    message = `Received: ${newImageName}`;
     if (file) {
       message = `${logPrefix}${message}`;
       debug(chalk.green(message));
@@ -54,10 +54,10 @@ const firebaseUploads = async (req, res, next) => {
             next(error);
             return;
           }
-          message = `${logPrefix}Uploading image: ${newImageName}`;
+          message = `${logPrefix}Uploading...: ${newImageName}`;
           debug(chalk.green(message));
 
-          message = `${logPrefix}Reading image: ${newImageName}`;
+          message = `${logPrefix}Reading...: ${newImageName}`;
           debug(chalk.green(message));
 
           await fs.readFile(
@@ -74,20 +74,17 @@ const firebaseUploads = async (req, res, next) => {
               }
 
               const storage = getStorage(firebaseApp);
-              message = `${logPrefix}Storage: ${newImageName}`;
+              message = `${logPrefix}Storage: ${storage.name}`;
               debug(chalk.green(message));
 
               const storageRef = ref(storage, newImageName);
 
-              message = `${logPrefix}Image Ref: ${newImageName}`;
-              debug(chalk.green(message));
-
-              message = `${logPrefix}UploadBytes start...`;
+              message = `${logPrefix}UploadBytes...:${newImageName}`;
               debug(chalk.green(message));
 
               await uploadBytes(storageRef, readFile);
 
-              messDescription = `getDownloadURL start: ${newImageName}`;
+              messDescription = `getDownloadURL...:${newImageName}`;
               message = `${logPrefix}${messDescription}`;
               debug(chalk.green(message));
 
@@ -96,7 +93,7 @@ const firebaseUploads = async (req, res, next) => {
               req.imgBackup = firebaseImageURL;
               req.img = path.join("images", newImageName);
 
-              message = `${logPrefix}Uploaded successfully.`;
+              message = `${logPrefix}Finished successfully.`;
               debug(chalk.green(message));
 
               next();
