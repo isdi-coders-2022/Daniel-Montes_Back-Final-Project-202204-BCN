@@ -20,6 +20,7 @@ const corsOptions = {
     "http://127.0.0.1:3000",
     "https://daniel-montes-final-project-202204-bcn.netlify.app/",
     "https://daniel-montes-final-project-202204-bcn.netlify.app",
+    "http://localhost:4000/penguins/create",
   ],
 };
 

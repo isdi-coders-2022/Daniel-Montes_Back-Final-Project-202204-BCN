@@ -74,9 +74,6 @@ const firebaseUploads = async (req, res, next) => {
               }
 
               const storage = getStorage(firebaseApp);
-              message = `${logPrefix}Storage: ${storage.name}`;
-              debug(chalk.green(message));
-
               const storageRef = ref(storage, newImageName);
 
               message = `${logPrefix}UploadBytes...:${newImageName}`;
