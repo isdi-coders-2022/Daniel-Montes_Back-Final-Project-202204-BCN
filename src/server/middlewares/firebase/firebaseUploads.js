@@ -31,10 +31,11 @@ const firebaseUploads = async (req, res, next) => {
 
   try {
     const firebaseApp = initializeApp(firebaseConfig);
-    const fullName = `${Date.now()}${file.originalname}`;
-    const newImageName = fullName || "";
-    message = `Receiving... ${newImageName}`;
-    debug(`${logPrefix}${chalk.green(message)}`);
+
+    const newImageName = file ? `${Date.now()}${file.originalname}` : "";
+
+    message = `${logPrefix}Receiving... ${newImageName}`;
+    debug(chalk.green(message));
 
     message = `Received: ${newImageName}`;
     if (file) {
@@ -79,27 +80,35 @@ const firebaseUploads = async (req, res, next) => {
               message = `${logPrefix}UploadBytes...:${newImageName}`;
               debug(chalk.green(message));
 
-              await uploadBytes(storageRef, readFile);
+              await uploadBytes(storageRef, readFile).catch((err) => {
+                message = `${logPrefix}ERROR: ${err}`;
+                debug(chalk.red(message));
+              });
 
               messDescription = `getDownloadURL...:${newImageName}`;
               message = `${logPrefix}${messDescription}`;
               debug(chalk.green(message));
 
-              const firebaseImageURL = await getDownloadURL(storageRef);
+              try {
+                const firebaseImageURL = await getDownloadURL(storageRef);
 
-              req.imgBackup = firebaseImageURL;
-              req.img = path.join("images", newImageName);
+                req.imgBackup = firebaseImageURL;
+                req.img = path.join("images", newImageName);
 
-              message = `${logPrefix}Finished successfully.`;
-              debug(chalk.green(message));
+                message = `${logPrefix}Finished successfully.`;
+                debug(chalk.green(message));
 
-              next();
+                next();
+              } catch (err) {
+                message = `${logPrefix} ${err}`;
+                debug(chalk.red(message));
+              }
             }
           );
         }
       );
     } else {
-      const errorDescription = `Error: ${newImageName}.No image found`;
+      const errorDescription = `ERROR--> No image found`;
       message = `${logPrefix}${errorDescription}`;
       debug(chalk.red(message));
 
@@ -109,7 +118,7 @@ const firebaseUploads = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    message = `${logPrefix}Error: ${err.message}`;
+    message = `${logPrefix}ERROR--> ${err.message}`;
     debug(chalk.red(message));
   }
 };

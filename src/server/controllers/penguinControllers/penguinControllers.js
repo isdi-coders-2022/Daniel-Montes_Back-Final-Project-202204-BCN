@@ -1,5 +1,6 @@
-const debug = require("debug")("AAP:PControllers");
 const chalk = require("chalk");
+const debug = require("debug")(chalk.white("AAP:PControllers"));
+
 const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
@@ -113,10 +114,20 @@ const deletePenguin = async (req, res, next) => {
 };
 
 const createPenguin = async (req, res) => {
-  message = chalk.green(`${logPrefixgetCreate}Name: ${req.body.name}`);
+  message = chalk.green(`${logPrefixgetCreate}Favourite: ${req.body.name}`);
   debug(message);
 
-  const { penguin } = req.body;
+  const penguin = {
+    name: req.body.name,
+    category: req.body.category,
+    likers: req.body.likers,
+    favs: req.body.favs,
+    likes: 1,
+    description: req.body.description,
+    image: req.body.image,
+    imageBackup: req.body.imageBackup,
+  };
+
   try {
     const newPenguin = await Penguin.create({ penguin });
 
@@ -127,9 +138,7 @@ const createPenguin = async (req, res) => {
 
     res.status(201).json(newPenguin);
   } catch (err) {
-    message = chalk.red(
-      `${logPrefixgetCreate}Error saving new penguin: ${req.body.name}`
-    );
+    message = chalk.red(`${logPrefixgetCreate}ERROR saving: ${req.body.name}`);
     debug(message);
 
     message = chalk.red(`${logPrefixgetCreate}ERROR-> ${err}`);
