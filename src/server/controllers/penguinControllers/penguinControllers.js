@@ -1,16 +1,16 @@
 const chalk = require("chalk");
-const debug = require("debug")(chalk.white("AAP:PControllers"));
+const debug = require("debug")(chalk.blue("AAP:PControllers"));
 
 const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
-const logPrefix = chalk.cyan("User Request-->");
-const logPrefixDetail = `${logPrefix}${chalk.white(`GET Detail: `)}`;
-const logPrefixGet = `${logPrefix}${chalk.white(`GET: `)}`;
-const logPrefixDelete = `${logPrefix}${chalk.white(`DELETE: `)}`;
-const logPrefixgetFavs = `${logPrefix}${chalk.white(`GET favs: `)}`;
-const logPrefixgetCreate = `${logPrefix}${chalk.white(`CREATE: `)}`;
-const logPrefixgetEdit = `${logPrefix}${chalk.white(`UPDATE: `)}`;
+const logPrefix = chalk.white("User Request-->");
+const logPrefixDetail = `${logPrefix}${chalk.blue(`GET Detail: `)}`;
+const logPrefixGet = `${logPrefix}${chalk.blue(`GET: `)}`;
+const logPrefixDelete = `${logPrefix}${chalk.blue(`DELETE: `)}`;
+const logPrefixgetFavs = `${logPrefix}${chalk.blue(`GET favs: `)}`;
+const logPrefixgetCreate = `${logPrefix}${chalk.blue(`CREATE: `)}`;
+const logPrefixgetEdit = `${logPrefix}${chalk.blue(`UPDATE: `)}`;
 
 let message = "";
 
@@ -113,23 +113,33 @@ const deletePenguin = async (req, res, next) => {
   }
 };
 
-const createPenguin = async (req, res) => {
+const createPenguin = async (req, res, next) => {
   message = `${logPrefixgetCreate}${chalk.green(`Name: ${req.body.name}`)}`;
   debug(message);
 
-  const penguin = {
-    name: req.body.name,
-    category: req.body.category,
-    likers: req.body.likers,
-    favs: req.body.favs,
-    likes: 1,
-    description: req.body.description,
-    image: req.body.image,
-    imageBackup: req.body.imageBackup,
-  };
+  const { name, img, imgBackup, category, likers, favs, description } = req;
 
   try {
-    const newPenguin = await Penguin.create({ penguin });
+    const user = await Penguin.findOne({ name });
+    if (user) {
+      const err = new Error();
+      err.code = 409;
+      err.message = "This name already exists";
+      next(err);
+
+      return;
+    }
+
+    const newPenguin = await Penguin.create({
+      name,
+      category,
+      likers,
+      favs,
+      likes: 1,
+      description,
+      image: img,
+      imageBackup: imgBackup,
+    });
 
     message = chalk.green(
       `${logPrefixgetCreate}${newPenguin.name} added successfully`
