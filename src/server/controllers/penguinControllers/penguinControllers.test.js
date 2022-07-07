@@ -177,7 +177,7 @@ describe("Given editPenguin middleware", () => {
       bcrypt.compare = jest.fn().mockResolvedValue(false);
       const req = { body: { name: "p2", category: "p1" } };
       const res = {
-        status: jest.fn().mockResolvedValue(500),
+        status: 500,
         json: jest.fn(),
       };
 
