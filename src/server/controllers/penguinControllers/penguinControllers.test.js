@@ -177,14 +177,14 @@ describe("Given editPenguin middleware", () => {
       bcrypt.compare = jest.fn().mockResolvedValue(false);
       const req = { body: { name: "p2", category: "p1" } };
       const res = {
-        status: jest.fn().mockResolvedValue(200),
+        status: jest.fn().mockResolvedValue(500),
         json: jest.fn(),
       };
 
       Penguin.create = jest.fn().mockResolvedValue(true);
       await createPenguin(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.status).toBe(500);
     });
   });
 });
