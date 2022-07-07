@@ -6,9 +6,9 @@ const User = require("../../../db/models/User/User");
 const { customError } = require("../../utils/customError");
 
 const logPrefix = chalk.white("User Request--> ");
-const logPrefixLogin = `${logPrefix}${chalk.blue(`LOGIN: `)}`;
-const logPrefixRegister = `${logPrefix}${chalk.blue(`REGISTER: `)}`;
-const logPrefixGetUser = `${logPrefix}${chalk.blue(`GET User:  `)}`;
+const logPrefixLogin = chalk.blue(`${logPrefix}LOGIN: `);
+const logPrefixRegister = chalk.blue(`${logPrefix}REGISTER: `);
+const logPrefixGetUser = chalk.blue(`${logPrefix}GET User: `);
 
 const userLogin = async (req, res, next) => {
   const { username, password } = req.body;
