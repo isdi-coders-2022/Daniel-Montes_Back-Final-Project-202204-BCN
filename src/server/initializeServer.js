@@ -1,6 +1,6 @@
 require("dotenv").config();
 const chalk = require("chalk");
-const debug = require("debug")(chalk.yellow("AAP:initServer:"));
+const debug = require("debug")(chalk.white("AAP:initServer:"));
 
 const app = require("./index");
 

@@ -1,7 +1,8 @@
 const express = require("express");
 const { validate } = require("express-validation");
-const debug = require("debug")("AAP:URouters");
 const chalk = require("chalk");
+const debug = require("debug")(chalk.white("AAP:URouters"));
+
 const {
   userRegister,
   userLogin,
@@ -13,32 +14,50 @@ const {
   userRegisterSchema,
 } = require("../../../schemas/userSchema");
 
-const logPrefix = "User Request-->";
+const logPrefix = chalk.cyan("User Request-->");
 
 const usersRouters = express.Router();
 
 const beforeLogin = () => {
   try {
-    debug(chalk.green(`${logPrefix} LOGIN: Validating user schema`));
-    return validate(userLoginSchema);
+    const result = validate(userLoginSchema);
+
+    debug(
+      `${logPrefix}${chalk.white(` LOGIN: `)}${chalk.green(
+        `User schema validated successfully.`
+      )}`
+    );
+    return result;
   } catch (error) {
-    debug(chalk.red(`${logPrefix} LOGIN: ERROR Validating user schema`));
-    return validate(userLoginSchema);
+    debug(`${logPrefix}${chalk.red(` LOGIN: ERROR Validating user schema.`)}`);
+
+    return error;
   }
 };
 
 const beforeRegister = () => {
   try {
-    debug(chalk.green(`${logPrefix} REGISTER: Validating user schema`));
-    return validate(userRegisterSchema);
+    const result = validate(userRegisterSchema);
+
+    debug(
+      `${logPrefix}${chalk.white(` REGISTER: `)}${chalk.green(
+        `User schema validated successfully.`
+      )}`
+    );
+    return result;
   } catch (error) {
-    debug(chalk.red(`${logPrefix} REGISTER: ERROR Validating user schema`));
-    return validate(userRegisterSchema);
+    debug(
+      `${logPrefix}${chalk.white(` REGISTER: `)}${chalk.red(
+        `ERROR Validating user schema.`
+      )}`
+    );
+    return error;
   }
 };
 
-usersRouters.post("/login", beforeLogin(), userLogin);
 usersRouters.post("/register", beforeRegister(), userRegister);
+usersRouters.post("/login", beforeLogin(), userLogin);
+
 usersRouters.get("/:UserId", getUser);
 usersRouters.get("/edit/:UserId", getUser);
 

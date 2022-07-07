@@ -5,8 +5,8 @@ const debug = require("debug")("AAP:UControllers");
 const User = require("../../../db/models/User/User");
 const { customError } = require("../../utils/customError");
 
-const logPrefix = "User Request--> ";
-const logPrefixLogin = `${logPrefix}LOGIN: `;
+const logPrefix = chalk.cyan("User Request--> ");
+const logPrefixLogin = `${logPrefix}${chalk.white(`LOGIN: `)}`;
 const logPrefixRegister = `${logPrefix}REGISTER: `;
 const logPrefixGetUser = `${logPrefix}GET User: `;
 
@@ -126,14 +126,14 @@ const userRegister = async (req, res, next) => {
 const getUser = async (req, res, next) => {
   try {
     const { UserId } = req.params;
-    debug(chalk.green(`${logPrefixGetUser}${String(UserId)}`));
+    debug(`${logPrefixGetUser}${chalk.green(`${String(UserId)}`)}`);
     const user = await User.findById(UserId);
     const { username } = user;
-    debug(chalk.green(`${logPrefixGetUser}${username} found!`));
+    debug(`${logPrefixGetUser}${chalk.green(`${username} found!`)}`);
 
     res.status(200).json(user);
   } catch (err) {
-    debug(chalk.red(`${logPrefixGetUser}ERROR: ${err}`));
+    debug(`${logPrefixGetUser}${chalk.red(`ERROR: ${err}`)}`);
     err.message = `${logPrefixGetUser} ${err}`;
     err.code = 404;
 
