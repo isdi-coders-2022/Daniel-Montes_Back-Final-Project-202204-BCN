@@ -1,14 +1,14 @@
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const chalk = require("chalk");
-const debug = require("debug")("AAP:UControllers");
+const debug = require("debug")(chalk.blue("AAP:UControllers"));
 const User = require("../../../db/models/User/User");
 const { customError } = require("../../utils/customError");
 
-const logPrefix = chalk.cyan("User Request--> ");
-const logPrefixLogin = `${logPrefix}${chalk.white(`LOGIN: `)}`;
-const logPrefixRegister = `${logPrefix}REGISTER: `;
-const logPrefixGetUser = `${logPrefix}GET User: `;
+const logPrefix = chalk.white("User Request--> ");
+const logPrefixLogin = chalk.blue(`${logPrefix}LOGIN: `);
+const logPrefixRegister = chalk.blue(`${logPrefix}REGISTER: `);
+const logPrefixGetUser = chalk.blue(`${logPrefix}GET User: `);
 
 const userLogin = async (req, res, next) => {
   const { username, password } = req.body;

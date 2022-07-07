@@ -1,6 +1,6 @@
 require("dotenv").config();
 const chalk = require("chalk");
-const debug = require("debug")(chalk.white("AAP:db:connection:"));
+const debug = require("debug")(chalk.blue("AAP:db:connection:"));
 const mongoose = require("mongoose");
 
 const connectDB = (connectionString) =>

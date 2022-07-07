@@ -1,7 +1,7 @@
 const express = require("express");
 const { validate } = require("express-validation");
 const chalk = require("chalk");
-const debug = require("debug")(chalk.white("AAP:URouters"));
+const debug = require("debug")(chalk.blue("AAP:URouters"));
 
 const {
   userRegister,
@@ -14,7 +14,7 @@ const {
   userRegisterSchema,
 } = require("../../../schemas/userSchema");
 
-const logPrefix = chalk.cyan("User Request-->");
+const logPrefix = chalk.white("User Request-->");
 
 const usersRouters = express.Router();
 
@@ -23,7 +23,7 @@ const beforeLogin = () => {
     const result = validate(userLoginSchema);
 
     debug(
-      `${logPrefix}${chalk.white(` LOGIN: `)}${chalk.green(
+      `${logPrefix}${chalk.blue(` LOGIN: `)}${chalk.green(
         `User schema validated successfully.`
       )}`
     );
@@ -40,14 +40,14 @@ const beforeRegister = () => {
     const result = validate(userRegisterSchema);
 
     debug(
-      `${logPrefix}${chalk.white(` REGISTER: `)}${chalk.green(
+      `${logPrefix}${chalk.blue(` REGISTER: `)}${chalk.green(
         `User schema validated successfully.`
       )}`
     );
     return result;
   } catch (error) {
     debug(
-      `${logPrefix}${chalk.white(` REGISTER: `)}${chalk.red(
+      `${logPrefix}${chalk.blue(` REGISTER: `)}${chalk.red(
         `ERROR Validating user schema.`
       )}`
     );

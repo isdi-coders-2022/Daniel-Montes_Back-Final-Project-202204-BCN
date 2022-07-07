@@ -1,5 +1,5 @@
 const chalk = require("chalk");
-const debug = require("debug")(chalk.white("AAP:Firebase"));
+const debug = require("debug")(chalk.blue("AAP:Firebase"));
 
 const { initializeApp } = require("firebase/app");
 
@@ -18,7 +18,7 @@ let message = "";
 
 const firebaseUploads = async (req, res, next) => {
   const { file } = req;
-  const logPrefix = `${chalk.cyan("User Request-->")}${chalk.white(
+  const logPrefix = `${chalk.white("User Request-->")}${chalk.blue(
     "FIREBASE: "
   )}`;
 
