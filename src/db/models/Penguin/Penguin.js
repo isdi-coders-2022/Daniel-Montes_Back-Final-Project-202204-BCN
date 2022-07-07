@@ -15,7 +15,7 @@ const PenguinSchema = new Schema({
     required: false,
   },
   imageBackup: {
-    type: {},
+    type: String,
     required: false,
   },
   likes: {

@@ -18,7 +18,9 @@ let message = "";
 
 const firebaseUploads = async (req, res, next) => {
   const { file } = req;
-  const logPrefix = "User Request--> FIREBASE: ";
+  const logPrefix = `${chalk.cyan("User Request-->")}${chalk.white(
+    "FIREBASE: "
+  )}`;
 
   const firebaseConfig = {
     apiKey: "AIzaSyArGWpvfmz5jBpnuRqM3hvCQr_r0fDhx9Y",
@@ -108,14 +110,16 @@ const firebaseUploads = async (req, res, next) => {
         }
       );
     } else {
-      const errorDescription = `ERROR--> No image found`;
+      let errorDescription = `ERROR--> No image found.`;
       message = `${logPrefix}${errorDescription}`;
       debug(chalk.red(message));
 
       req.imgBackup = "";
       req.img = "";
 
-      next();
+      errorDescription = `ERROR--> Upload canceled.`;
+      message = `${logPrefix}${errorDescription}`;
+      debug(chalk.red(message));
     }
   } catch (err) {
     message = `${logPrefix}ERROR--> ${err.message}`;

@@ -4,13 +4,13 @@ const debug = require("debug")(chalk.white("AAP:PControllers"));
 const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
-const logPrefix = "User Request--> ";
-const logPrefixDetail = `${logPrefix}GET Detail: `;
-const logPrefixGet = `${logPrefix}GET: `;
-const logPrefixDelete = `${logPrefix}DELETE: `;
-const logPrefixgetFavs = `${logPrefix}GET favs: `;
-const logPrefixgetCreate = `${logPrefix}CREATE: `;
-const logPrefixgetEdit = `${logPrefix}UPDATE: `;
+const logPrefix = chalk.cyan("User Request-->");
+const logPrefixDetail = `${logPrefix}${chalk.white(`GET Detail: `)}`;
+const logPrefixGet = `${logPrefix}${chalk.white(`GET: `)}`;
+const logPrefixDelete = `${logPrefix}${chalk.white(`DELETE: `)}`;
+const logPrefixgetFavs = `${logPrefix}${chalk.white(`GET favs: `)}`;
+const logPrefixgetCreate = `${logPrefix}${chalk.white(`CREATE: `)}`;
+const logPrefixgetEdit = `${logPrefix}${chalk.white(`UPDATE: `)}`;
 
 let message = "";
 
@@ -114,7 +114,7 @@ const deletePenguin = async (req, res, next) => {
 };
 
 const createPenguin = async (req, res) => {
-  message = chalk.green(`${logPrefixgetCreate}Favourite: ${req.body.name}`);
+  message = `${logPrefixgetCreate}${chalk.green(`Name: ${req.body.name}`)}`;
   debug(message);
 
   const penguin = {
@@ -141,7 +141,7 @@ const createPenguin = async (req, res) => {
     message = chalk.red(`${logPrefixgetCreate}ERROR saving: ${req.body.name}`);
     debug(message);
 
-    message = chalk.red(`${logPrefixgetCreate}ERROR-> ${err}`);
+    message = chalk.red(`${logPrefixgetCreate}ERROR--> ${err}`);
     debug(message);
 
     err.message = `${logPrefixgetCreate}ERROR-> ${err}`;
