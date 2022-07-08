@@ -36,7 +36,7 @@ const firebaseUploads = async (req, res, next) => {
 
     const newImageName = file ? `${Date.now()}${file.originalname}` : "";
 
-    message = `${logPrefix}Receiving... ${newImageName}`;
+    message = `${logPrefix}Receiving...: ${newImageName}`;
     debug(chalk.green(message));
 
     message = `Received: ${newImageName}`;
@@ -79,12 +79,12 @@ const firebaseUploads = async (req, res, next) => {
               const storage = getStorage(firebaseApp);
               const storageRef = ref(storage, newImageName);
 
-              message = `${logPrefix}UploadBytes...:${newImageName}`;
+              message = `${logPrefix}UploadBytes...: ${newImageName}`;
               debug(chalk.green(message));
 
               await uploadBytes(storageRef, readFile);
 
-              messDescription = `getDownloadURL...:${newImageName}`;
+              messDescription = `getDownloadURL...: ${newImageName}`;
               message = `${logPrefix}${messDescription}`;
               debug(chalk.green(message));
 
@@ -92,8 +92,14 @@ const firebaseUploads = async (req, res, next) => {
 
               req.imgBackup = firebaseImageURL;
               req.img = path.join("uploads", "images", newImageName);
+              if (!req.img.includes("uploads")) {
+                req.img = `uploads/${newImageName}`;
+              }
 
               message = `${logPrefix}Finished successfully.`;
+
+              debug(chalk.green(`${logPrefix}img: ${req.img}`));
+              debug(chalk.green(`${logPrefix}imgBackup: ${firebaseImageURL}`));
               debug(chalk.green(message));
 
               next();
