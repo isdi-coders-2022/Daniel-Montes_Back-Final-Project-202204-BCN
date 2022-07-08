@@ -117,7 +117,7 @@ const createPenguin = async (req, res, next) => {
   const { name, img, imgBackup, category, likers, favs, description } =
     req.body;
 
-  message = `${logPrefixgetCreate}${chalk.green(`Name: ${name}`)}`;
+  message = chalk.green(`${logPrefixgetCreate}Name: ${name}`)`);
   debug(message);
 
   try {
