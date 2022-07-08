@@ -82,10 +82,12 @@ const firebaseUploads = async (req, res, next) => {
               message = `${logPrefix}UploadBytes...:${newImageName}`;
               debug(chalk.green(message));
 
-              await uploadBytes(storageRef, readFile).catch((err) => {
+              try {
+                await uploadBytes(storageRef, readFile);
+              } catch (err) {
                 message = `${logPrefix}ERROR: ${err}`;
                 debug(chalk.red(message));
-              });
+              }
 
               messDescription = `getDownloadURL...:${newImageName}`;
               message = `${logPrefix}${messDescription}`;

@@ -117,7 +117,8 @@ const createPenguin = async (req, res, next) => {
   message = `${logPrefixgetCreate}${chalk.green(`Name: ${req.body.name}`)}`;
   debug(message);
 
-  const { name, img, imgBackup, category, likers, favs, description } = req;
+  const { name, img, imgBackup, category, likers, favs, description } =
+    req.body;
 
   try {
     const user = await Penguin.findOne({ name });
