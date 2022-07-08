@@ -114,8 +114,7 @@ const deletePenguin = async (req, res, next) => {
 };
 
 const createPenguin = async (req, res, next) => {
-  const { name, img, imgBackup, category, likers, favs, description } =
-    req.body;
+  const { name, img, imgBackup, category, description } = req.body;
 
   message = chalk.green(`${logPrefixgetCreate}Name: ${name}`);
   debug(message);
@@ -134,8 +133,8 @@ const createPenguin = async (req, res, next) => {
     const newPenguin = await Penguin.create({
       name,
       category,
-      likers: `${likers}`,
-      favs: `${favs}`,
+      likers: req.body.likers,
+      favs: req.body.favs,
       likes: 1,
       description,
       image: img,
