@@ -134,8 +134,8 @@ const createPenguin = async (req, res, next) => {
     const newPenguin = await Penguin.create({
       name,
       category,
-      likers,
-      favs,
+      likers: `${likers}`,
+      favs: `${favs}`,
       likes: 1,
       description,
       image: img,
@@ -188,10 +188,10 @@ const editPenguin = async (req, res, next) => {
     message = chalk.green(`${logPrefix} UPDATE: ${type}.`);
     debug(message);
 
-    res.status(200).json(penguinEdited);
-
     message = chalk.green(`${logPrefix} UPDATE: Finished successfully.`);
     debug(message);
+
+    res.status(200).json(penguinEdited);
   } catch (error) {
     message = chalk.red(
       `${logPrefixgetEdit}ERROR-> ${error} (err.code: ${error.code})`
