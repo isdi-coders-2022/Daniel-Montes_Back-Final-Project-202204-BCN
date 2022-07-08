@@ -82,31 +82,21 @@ const firebaseUploads = async (req, res, next) => {
               message = `${logPrefix}UploadBytes...:${newImageName}`;
               debug(chalk.green(message));
 
-              try {
-                await uploadBytes(storageRef, readFile);
-              } catch (err) {
-                message = `${logPrefix}ERROR: ${err}`;
-                debug(chalk.red(message));
-              }
+              await uploadBytes(storageRef, readFile);
 
               messDescription = `getDownloadURL...:${newImageName}`;
               message = `${logPrefix}${messDescription}`;
               debug(chalk.green(message));
 
-              try {
-                const firebaseImageURL = await getDownloadURL(storageRef);
+              const firebaseImageURL = await getDownloadURL(storageRef);
 
-                req.imgBackup = firebaseImageURL;
-                req.img = path.join("images", newImageName);
+              req.imgBackup = firebaseImageURL;
+              req.img = path.join("images", newImageName);
 
-                message = `${logPrefix}Finished successfully.`;
-                debug(chalk.green(message));
+              message = `${logPrefix}Finished successfully.`;
+              debug(chalk.green(message));
 
-                next();
-              } catch (err) {
-                message = `${logPrefix} ${err}`;
-                debug(chalk.red(message));
-              }
+              next();
             }
           );
         }
