@@ -93,7 +93,7 @@ const firebaseUploads = async (req, res, next) => {
               req.imgBackup = firebaseImageURL;
               req.img = path.join("uploads", "images", newImageName);
               if (!req.img.includes("uploads")) {
-                req.img = `uploads/${newImageName}`;
+                req.img = `/uploads/${newImageName}`;
               }
 
               message = `${logPrefix}Finished successfully.`;
