@@ -91,7 +91,7 @@ const firebaseUploads = async (req, res, next) => {
               const firebaseImageURL = await getDownloadURL(storageRef);
 
               req.imgBackup = firebaseImageURL;
-              req.img = path.join("images", newImageName);
+              req.img = path.join("uploads", "images", newImageName);
 
               message = `${logPrefix}Finished successfully.`;
               debug(chalk.green(message));
