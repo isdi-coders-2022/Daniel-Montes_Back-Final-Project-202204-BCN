@@ -114,14 +114,14 @@ const deletePenguin = async (req, res, next) => {
 };
 
 const createPenguin = async (req, res, next) => {
-  message = `${logPrefixgetCreate}${chalk.green(`Name: ${req.body.name}`)}`;
-  debug(message);
-
   const { name, img, imgBackup, category, likers, favs, description } =
     req.body;
 
+  message = chalk.green(`${logPrefixgetCreate}Name: ${name}`);
+  debug(message);
+
   try {
-    const user = await Penguin.findOne(name);
+    const user = await Penguin.findOne({ name });
     if (user) {
       const err = new Error();
       err.code = 409;
