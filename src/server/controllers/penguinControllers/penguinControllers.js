@@ -121,7 +121,7 @@ const createPenguin = async (req, res, next) => {
     req.body;
 
   try {
-    const user = await Penguin.findOne({ name });
+    const user = await Penguin.findOne(name);
     if (user) {
       const err = new Error();
       err.code = 409;
