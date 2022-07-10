@@ -180,9 +180,6 @@ const editPenguin = async (req, res, next) => {
 
     await Penguin.findByIdAndUpdate(idPenguin, penguinEdited, {
       new: true,
-    }).catch((error) => {
-      message = `${logPrefixgetEdit}${type}ERROR: ${error.message}`;
-      debug(chalk.red(message));
     });
 
     message = chalk.green(`${logPrefix} UPDATE: ${type}.`);
