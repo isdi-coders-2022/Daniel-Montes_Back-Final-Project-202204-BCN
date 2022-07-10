@@ -198,8 +198,6 @@ const editPenguin = async (req, res, next) => {
 
     error.customMessage = `${logPrefix} UPDATE: ${type}.  ERROR Penguin not found`;
     error.code = 400;
-
-    next(error);
   }
 };
 

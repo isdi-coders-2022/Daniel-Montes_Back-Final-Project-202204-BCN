@@ -98,7 +98,7 @@ describe("Given deletePenguin middleware", () => {
         json: jest.fn(),
       };
       Penguin.findByIdAndDelete = jest.fn().mockResolvedValue(true);
-      await deletePenguin(req, res, null);
+      await deletePenguin(req, res, jest.fn());
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(expectedResponse);
