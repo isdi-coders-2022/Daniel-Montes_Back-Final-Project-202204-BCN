@@ -180,9 +180,6 @@ const editPenguin = async (req, res, next) => {
 
     await Penguin.findByIdAndUpdate(idPenguin, penguinEdited, {
       new: true,
-    }).catch((error) => {
-      message = `${logPrefixgetEdit}${type}ERROR: ${error.message}`;
-      debug(chalk.red(message));
     });
 
     message = chalk.green(`${logPrefix} UPDATE: ${type}.`);
@@ -201,8 +198,6 @@ const editPenguin = async (req, res, next) => {
 
     error.customMessage = `${logPrefix} UPDATE: ${type}.  ERROR Penguin not found`;
     error.code = 400;
-
-    next(error);
   }
 };
 
