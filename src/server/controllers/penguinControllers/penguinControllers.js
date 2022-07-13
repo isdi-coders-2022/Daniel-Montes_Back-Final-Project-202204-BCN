@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
 const logPrefix = chalk.white("User Request-->");
-const logPrefixDetail = `${logPrefix}${chalk.blue(`GET Detail: `)}`;
-const logPrefixGet = `${logPrefix}${chalk.blue(`GET: `)}`;
-const logPrefixDelete = `${logPrefix}${chalk.blue(`DELETE: `)}`;
-const logPrefixgetFavs = `${logPrefix}${chalk.blue(`GET favs: `)}`;
-const logPrefixgetCreate = `${logPrefix}${chalk.blue(`CREATE: `)}`;
-const logPrefixgetEdit = `${logPrefix}${chalk.blue(`UPDATE: `)}`;
+const logPrefixDetail = chalk.blue(`${logPrefix}GET Detail: `);
+const logPrefixGet = chalk.blue(`${logPrefix}GET: `);
+const logPrefixDelete = chalk.blue(`${logPrefix}DELETE: `);
+const logPrefixgetFavs = chalk.blue(`${logPrefix}GET favs: `);
+const logPrefixgetCreate = chalk.blue(`${logPrefix}CREATE: `);
+const logPrefixgetEdit = chalk.blue(`${logPrefix}UPDATE: `);
 
 let message = "";
 
@@ -177,15 +177,12 @@ const editPenguin = async (req, res) => {
       imageBackup: req.body.imageBackup || "",
       description: req.body.description,
     };
-    message = chalk.green(`${logPrefixgetEdit}${penguinEdited.name}`);
+    message = chalk.green(`${logPrefixgetEdit} ${type} ${penguinEdited.name}`);
     debug(message);
 
     await Penguin.findByIdAndUpdate(idPenguin, penguinEdited, {
       new: true,
     });
-
-    message = chalk.green(`${logPrefix} UPDATE: ${type}.`);
-    debug(message);
 
     message = chalk.green(`${logPrefix} UPDATE: Finished successfully.`);
     debug(message);
