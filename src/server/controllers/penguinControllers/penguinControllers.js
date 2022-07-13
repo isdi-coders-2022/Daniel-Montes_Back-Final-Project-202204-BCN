@@ -68,7 +68,9 @@ const getFavsPenguins = async (req, res, next) => {
     const token = authorization.replace("Bearer ", "");
     const { username, id } = jwt.verify(token, process.env.JWT_SECRET);
 
-    message = chalk.green(`${logPrefixgetFavs}Username: ${username}.`);
+    message = chalk.green(
+      `${logPrefixgetFavs}Searching favs for: ${username}.`
+    );
     debug(message);
 
     const penguins = await Penguin.find({ favs: id });
@@ -160,7 +162,7 @@ const createPenguin = async (req, res, next) => {
   }
 };
 
-const editPenguin = async (req, res, next) => {
+const editPenguin = async (req, res) => {
   const type = req.query.task;
 
   try {
