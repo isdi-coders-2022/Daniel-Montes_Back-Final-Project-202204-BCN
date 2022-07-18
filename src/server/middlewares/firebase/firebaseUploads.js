@@ -36,7 +36,7 @@ const firebaseUploads = async (req, res, next) => {
 
     const newImageName = file ? `${Date.now()}${file.originalname}` : "";
 
-    message = `${logPrefix}Receiving...: ${newImageName}`;
+    message = `${logPrefix}Receiving...: ${newImageName} `;
     debug(chalk.green(message));
 
     message = `Received: ${newImageName}`;
