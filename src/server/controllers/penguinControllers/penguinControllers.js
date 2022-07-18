@@ -10,7 +10,7 @@ const logPrefixGet = chalk.blue(`${logPrefix}GET: `);
 const logPrefixDelete = chalk.blue(`${logPrefix}DELETE: `);
 const logPrefixgetFavs = chalk.blue(`${logPrefix}GET favs: `);
 const logPrefixgetCreate = chalk.blue(`${logPrefix}CREATE: `);
-const logPrefixgetEdit = chalk.blue(`${logPrefix}UPDATE: `);
+const logPrefixgetEdit = chalk.blue(`${logPrefix}EDIT: `);
 
 let message = "";
 
@@ -177,14 +177,16 @@ const editPenguin = async (req, res) => {
       imageBackup: req.body.imageBackup || "",
       description: req.body.description,
     };
-    message = chalk.green(`${logPrefixgetEdit} ${type} ${penguinEdited.name}`);
+    message = chalk.green(
+      `${logPrefixgetEdit} ${penguinEdited.name}->${type}.`
+    );
     debug(message);
 
     await Penguin.findByIdAndUpdate(idPenguin, penguinEdited, {
       new: true,
     });
 
-    message = chalk.green(`${logPrefix} UPDATE: Finished successfully.`);
+    message = chalk.green(`${logPrefix}UPDATE: Finished successfully.`);
     debug(message);
 
     res.status(200).json(penguinEdited);
