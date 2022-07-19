@@ -9,8 +9,8 @@ const logPrefixGet = chalk.blue(`${logPrefix}GET: `);
 const logPrefixDelete = chalk.blue(`${logPrefix}DELETE: `);
 const logPrefixgetFavs = chalk.blue(`${logPrefix}GET favs: `);
 const logPrefixgetCreate = chalk.blue(`${logPrefix}CREATE: `);
-const logPrefixgetEdit = chalk.blue(`${logPrefix}EDIT: `);
-const logPrefixSearch = chalk.blue(`${logPrefix}EDIT: `);
+const logPrefixEdit = chalk.blue(`${logPrefix}EDIT: `);
+const logPrefixSearch = chalk.blue(`${logPrefix}SEARCH: `);
 
 let message = "";
 
@@ -29,7 +29,7 @@ const getPenguin = async (req, res, next) => {
 
     res.status(200).json(penguin);
   } catch (err) {
-    err.message = `${logPrefix}Penguin id: ${req.params.idPenguin}`;
+    err.message = `${logPrefixDetail}Penguin id: ${req.params.idPenguin}`;
     err.code = 404;
 
     next(err);
@@ -52,10 +52,10 @@ const getPenguins = async (req, res, next) => {
 
     res.status(200).json({ penguins });
   } catch (err) {
-    err.message = `${logPrefixGet}Getting all penguins for user: ${req.params.user}`;
+    err.message = `${logPrefixGet}Getting all penguins for user: ${req.params.user}.`;
     err.code = 404;
 
-    message = chalk.red(`${logPrefixGet}ERROR: ${err.message}`);
+    message = chalk.red(`${logPrefixGet}ERROR: ${err.message}.`);
     debug(message);
 
     next(err);
@@ -111,7 +111,7 @@ const getFavsPenguins = async (req, res, next) => {
 
     res.status(200).json({ penguins });
   } catch (err) {
-    err.message = `${logPrefixgetFavs} getFavsPenguins() getting all penguins`;
+    err.message = `${logPrefixgetFavs}getFavsPenguins() getting all penguins`;
     err.code = 404;
 
     next(err);
@@ -203,27 +203,25 @@ const editPenguin = async (req, res) => {
       imageBackup: req.body.imageBackup || "",
       description: req.body.description,
     };
-    message = chalk.green(
-      `${logPrefixgetEdit} ${penguinEdited.name}->${type}.`
-    );
+    message = chalk.green(`${logPrefixEdit}${penguinEdited.name}->${type}`);
     debug(message);
 
     await Penguin.findByIdAndUpdate(idPenguin, penguinEdited, {
       new: true,
     });
 
-    message = chalk.green(`${logPrefix}UPDATE: Finished successfully.`);
+    message = chalk.green(`${logPrefixEdit}Finished successfully.`);
     debug(message);
 
     res.status(200).json(penguinEdited);
   } catch (error) {
     message = chalk.red(
-      `${logPrefixgetEdit}ERROR-> ${error} (err.code: ${error.code})`
+      `${logPrefixEdit}ERROR-> ${error} (err.code: ${error.code})`
     );
 
     debug(message);
 
-    error.customMessage = `${logPrefix} UPDATE: ${type}.  ERROR Penguin not found`;
+    error.customMessage = `${logPrefixEdit}${type}. ERROR Penguin not found.`;
     error.code = 400;
   }
 };
