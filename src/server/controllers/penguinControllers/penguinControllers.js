@@ -1,6 +1,5 @@
 const chalk = require("chalk");
 const debug = require("debug")(chalk.blue("AAP:PControllers"));
-
 const jwt = require("jsonwebtoken");
 const Penguin = require("../../../db/models/Penguin/Penguin");
 
@@ -11,6 +10,7 @@ const logPrefixDelete = chalk.blue(`${logPrefix}DELETE: `);
 const logPrefixgetFavs = chalk.blue(`${logPrefix}GET favs: `);
 const logPrefixgetCreate = chalk.blue(`${logPrefix}CREATE: `);
 const logPrefixgetEdit = chalk.blue(`${logPrefix}EDIT: `);
+const logPrefixSearch = chalk.blue(`${logPrefix}EDIT: `);
 
 let message = "";
 
@@ -56,6 +56,32 @@ const getPenguins = async (req, res, next) => {
     err.code = 404;
 
     message = chalk.red(`${logPrefixGet}ERROR: ${err.message}`);
+    debug(message);
+
+    next(err);
+  }
+};
+
+const searchPenguins = async (req, res, next) => {
+  try {
+    message = chalk.green(`${logPrefixSearch}Penguins...`);
+    debug(message);
+    const { search } = req.params;
+    const penguins = await Penguin.find({ search });
+    message = chalk.green(
+      `${logPrefixSearch}Total found: ${penguins.length} cute penguins.`
+    );
+    debug(message);
+
+    message = chalk.green(`${logPrefixSearch}Finished successfully.`);
+    debug(message);
+
+    res.status(200).json({ penguins });
+  } catch (err) {
+    err.message = `${logPrefixSearch}Getting all penguins for user: ${req.params.user}`;
+    err.code = 404;
+
+    message = chalk.red(`${logPrefixSearch}ERROR: ${err.message}`);
     debug(message);
 
     next(err);
@@ -209,4 +235,5 @@ module.exports = {
   createPenguin,
   getFavsPenguins,
   editPenguin,
+  searchPenguins,
 };
