@@ -9,6 +9,7 @@ const {
   getFavsPenguins,
   getPenguin,
   editPenguin,
+  searchPenguins,
 } = require("../../../controllers/penguinControllers/penguinControllers");
 
 const firebaseUploads = require("../../firebase/firebaseUploads");
@@ -33,6 +34,7 @@ penguinRouters.get("/", getPenguins);
 penguinRouters.delete("/:idPenguin", deletePenguin);
 penguinRouters.get("/favs", getFavsPenguins);
 penguinRouters.get("/:idPenguin", getPenguin);
+penguinRouters.get("/search/:text", searchPenguins);
 penguinRouters.put("/:idPenguin", editPenguin);
 
 module.exports = penguinRouters;
