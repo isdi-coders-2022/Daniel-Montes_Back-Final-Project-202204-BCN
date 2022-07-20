@@ -6,7 +6,8 @@ const debug = require("debug")(chalk.blue("AAP:URouters"));
 const {
   userRegister,
   userLogin,
-  getUser,
+  userEdit,
+  userGet,
 } = require("../../../controllers/userControllers/userControllers");
 
 const {
@@ -58,7 +59,7 @@ const beforeRegister = () => {
 usersRouters.post("/register", beforeRegister(), userRegister);
 usersRouters.post("/login", beforeLogin(), userLogin);
 
-usersRouters.get("/:UserId", getUser);
-usersRouters.get("/edit/:UserId", getUser);
+usersRouters.get("/:UserId", userGet);
+usersRouters.put("/edit/:UserId", userEdit);
 
 module.exports = usersRouters;
