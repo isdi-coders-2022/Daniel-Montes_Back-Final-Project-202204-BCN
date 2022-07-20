@@ -132,11 +132,14 @@ const userGet = async (req, res, next) => {
     debug(`${logPrefixGet}${chalk.green(`${String(UserId)}`)}`);
     const user = await User.findById(UserId);
     const { username } = user;
-    debug(`${logPrefixGet}${chalk.green(`${username} found!`)}`);
+    message = `${logPrefixGet} ${username} found!`;
+    debug(chalk.green(message));
 
     res.status(200).json(user);
   } catch (err) {
-    debug(`${logPrefixGet}${chalk.red(`ERROR: ${err}`)}`);
+    message = `${logPrefixGet} ERROR: ${err}`;
+    debug(chalk.red(message));
+
     err.message = `${logPrefixGet} ${err}`;
     err.code = 404;
 
