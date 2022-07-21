@@ -8,13 +8,16 @@ const { customError } = require("../../utils/customError");
 const logPrefix = chalk.white("User Request--> ");
 const logPrefixLogin = chalk.blue(`${logPrefix}LOGIN: `);
 const logPrefixRegister = chalk.blue(`${logPrefix}REGISTER: `);
-const logPrefixGetUser = chalk.blue(`${logPrefix}GET User: `);
+const logPrefixGet = chalk.blue(`${logPrefix}GET User: `);
+const logPrefixEdit = chalk.blue(`${logPrefix}EDIT User: `);
+
+let message = "";
 
 const userLogin = async (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    const message = `${logPrefixLogin}Missing username or password...`;
+    message = `${logPrefixLogin}Missing username or password...`;
     const error = customError(400, message);
     debug(chalk.red(message));
 
@@ -25,7 +28,7 @@ const userLogin = async (req, res, next) => {
       const user = await User.findOne({ username });
 
       if (!user) {
-        const message = `${logPrefixLogin}Username or password is wrong`;
+        message = `${logPrefixLogin}Username or password is wrong`;
         const error = new Error(message);
 
         error.statusCode = 403;
@@ -47,7 +50,7 @@ const userLogin = async (req, res, next) => {
       const rightPassword = await bcrypt.compare(password, user.password);
 
       if (!rightPassword) {
-        const message = `${logPrefixLogin}Password not found`;
+        message = `${logPrefixLogin}Password not found`;
         debug(message);
 
         const error = new Error(message);
@@ -66,7 +69,7 @@ const userLogin = async (req, res, next) => {
 
       res.status(200).json({ token });
     } catch (err) {
-      const message = `${logPrefixLogin}ERROR ${err.message}`;
+      message = `${logPrefixLogin}ERROR ${err.message}`;
       const error = customError(500, message, err.message);
 
       debug(chalk.red(message));
@@ -79,7 +82,7 @@ const userLogin = async (req, res, next) => {
 const userRegister = async (req, res, next) => {
   const { name, username, password } = req.body;
   const { img, imgBackup } = req;
-  let message = `${logPrefixRegister}${username}`;
+  message = `${logPrefixRegister}${username}`;
 
   debug(chalk.green(message));
 
@@ -123,21 +126,63 @@ const userRegister = async (req, res, next) => {
   }
 };
 
-const getUser = async (req, res, next) => {
+const userGet = async (req, res, next) => {
   try {
     const { UserId } = req.params;
-    debug(`${logPrefixGetUser}${chalk.green(`${String(UserId)}`)}`);
+    debug(`${logPrefixGet}${chalk.green(`${String(UserId)}`)}`);
     const user = await User.findById(UserId);
     const { username } = user;
-    debug(`${logPrefixGetUser}${chalk.green(`${username} found!`)}`);
+    message = `${logPrefixGet} ${username} found!`;
+    debug(chalk.green(message));
 
     res.status(200).json(user);
   } catch (err) {
-    debug(`${logPrefixGetUser}${chalk.red(`ERROR: ${err}`)}`);
-    err.message = `${logPrefixGetUser} ${err}`;
+    message = `${logPrefixGet} ERROR: ${err}`;
+    debug(chalk.red(message));
+
+    err.message = `${logPrefixGet} ${err}`;
     err.code = 404;
 
     next(err);
   }
 };
-module.exports = { userLogin, userRegister, getUser };
+
+const userEdit = async (req, res) => {
+  const type = req.query.task;
+
+  try {
+    const { idUser } = req.params;
+    const userEdited = {
+      name: req.body.name,
+      category: req.body.category,
+      likes: req.body.likes,
+      likers: req.body.likers,
+      favs: req.body.favs,
+      image: req.img || "",
+      imageBackup: req.body.imageBackup || "",
+      description: req.body.description,
+    };
+    message = chalk.green(`${logPrefixEdit}${userEdited.name}->${type}`);
+    debug(message);
+
+    await User.findByIdAndUpdate(idUser, userEdited, {
+      new: true,
+    });
+
+    message = chalk.green(`${logPrefixEdit}Finished successfully.`);
+    debug(message);
+
+    res.status(200).json(userEdited);
+  } catch (error) {
+    message = chalk.red(
+      `${logPrefixEdit}ERROR-> ${error} (err.code: ${error.code})`
+    );
+
+    debug(message);
+
+    error.customMessage = `${logPrefixEdit}${type}. ERROR User not found.`;
+    error.code = 400;
+  }
+};
+
+module.exports = { userLogin, userRegister, userGet, userEdit };
