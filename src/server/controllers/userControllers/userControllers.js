@@ -130,6 +130,7 @@ const userGet = async (req, res, next) => {
   try {
     const { UserId } = req.params;
     debug(`${logPrefixGet}${chalk.green(`${String(UserId)}`)}`);
+
     const user = await User.findById(UserId);
     const { username } = user;
     message = `${logPrefixGet} ${username} found!`;
