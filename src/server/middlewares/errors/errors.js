@@ -17,7 +17,11 @@ const generalError = (err, req, res, next) => {
   const errorMessage = err.code ? err.message : "Internal server error";
 
   if (err instanceof ValidationError) {
-    debug(chalk.red(`ERROR: (${err.statusCode}) ${err.message}`));
+    debug(
+      chalk.red(
+        `ERROR: (${err.statusCode}) ${err.message} ${ValidationError.details}`
+      )
+    );
     res.status(400).json({ message: "Validation error" });
   } else {
     debug(chalk.red(`ERROR: ${err.message}`));
