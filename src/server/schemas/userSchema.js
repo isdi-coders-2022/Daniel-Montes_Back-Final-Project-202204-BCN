@@ -15,6 +15,10 @@ const userLoginSchema = {
 
 const userRegisterSchema = {
   body: Joi.object({
+    name: Joi.string()
+      .max(20)
+      .messages({ message: "A name is required" })
+      .required(),
     username: Joi.string()
       .max(20)
       .messages({ message: "A username is required" })
@@ -23,10 +27,7 @@ const userRegisterSchema = {
       .max(20)
       .messages({ message: "A password is required" })
       .required(),
-    name: Joi.string()
-      .max(20)
-      .messages({ message: "A name is required" })
-      .required(),
+    image: Joi.string().allow(null, ""),
   }),
 };
 

@@ -6,8 +6,9 @@ const debug = require("debug")(chalk.blue("AAP:URouters"));
 const {
   userRegister,
   userLogin,
-  userEdit,
+
   userGet,
+  userEdit,
 } = require("../../../controllers/userControllers/userControllers");
 
 const {

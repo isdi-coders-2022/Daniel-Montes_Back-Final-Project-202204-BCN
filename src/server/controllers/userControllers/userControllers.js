@@ -80,8 +80,8 @@ const userLogin = async (req, res, next) => {
 };
 
 const userRegister = async (req, res, next) => {
-  const { name, username, password } = req.body;
-  const { img, imgBackup } = req;
+  const { name, username, password, img } = req.body;
+
   message = `${logPrefixRegister}${username}`;
 
   debug(chalk.green(message));
@@ -105,7 +105,6 @@ const userRegister = async (req, res, next) => {
       password: encryptedPassword,
       isAdmin: false,
       image: img,
-      imageBackup: imgBackup,
     };
 
     await User.create(newUser);
@@ -130,6 +129,7 @@ const userGet = async (req, res, next) => {
   try {
     const { UserId } = req.params;
     debug(`${logPrefixGet}${chalk.green(`${String(UserId)}`)}`);
+
     const user = await User.findById(UserId);
     const { username } = user;
     message = `${logPrefixGet} ${username} found!`;
